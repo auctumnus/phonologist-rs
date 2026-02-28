@@ -6,3 +6,4 @@ edition = "2024"
 [dependencies]
 phf = { version = "0.13.1", features = ["macros"] }
 strum = { version = "0.28.0", features = ["derive"] }
+unicode-normalization = "0.1.25"

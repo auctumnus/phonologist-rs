@@ -1,4 +1,5 @@
 use std::collections::HashSet;
+use unicode_normalization::UnicodeNormalization;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Place {
@@ -117,11 +118,141 @@ pub enum Modifier {
     ExtraShort,
 }
 
-static PHONEMES: phf::Map<&'static str, &'static [Feature]> = phf::phf_map! {
-    
+static PHONEMES: phf::Map<&'static str, &'static [Feature]> = {
+    use ConsonantFeature::*;
+    use VowelFeature::*;
+    use Feature::*;
+    use crate::Manner::*;
+    use crate::Place::*;
+    use crate::Height::*;
+    use crate::Depth::*;
+
+    phf::phf_map! {
+        "p" => &[
+            Consonant(Place(Bilabial)),
+            Consonant(Manner(Stop)),
+        ]
+    }
 };
 
-struct Phoneme {
+static PREFIX_MODIFIERS: phf::Map<&'static str, Modifier> = {
+    use Modifier::*;
+
+    phf::phf_map! {
+        "m͜" => PreNasalized,
+        "n͜" => PreNasalized,
+        "ɳ͜" => PreNasalized,
+        "ɲ͜" => PreNasalized,
+        "ŋ͜" => PreNasalized,
+        "ɴ͜" => PreNasalized,
+        "ᵐ" => PreNasalized,
+        "ⁿ" => PreNasalized,
+        "ᶯ" => PreNasalized,
+        "ᶮ" => PreNasalized,
+        "ᵑ" => PreNasalized,
+        "ᶰ" => PreNasalized,
+    }
+};
+
+static POSTFIX_MODIFIERS: phf::Map<&'static str, Modifier> = {
+    use Modifier::*;
+
+    phf::phf_map! {
+        "̯" => NonSyllabic,
+        "̑" => NonSyllabic,
+        "̩" => Syllabic,
+        "̍" => Syllabic,
+        "ʰ" => Aspirated,
+        "̚" => InaudibleRelease,
+        "ⁿ" => NasalRelease,
+        "ᵇ" => PostStopped,
+        "ᵈ" => PostStopped,
+        "ᶡ" => PostStopped,
+        "ᶢ" => PostStopped,
+        "ᵖ" => PostStopped,
+        "ᵗ" => PostStopped,
+        "ᶜ" => PostStopped,
+        "ᵏ" => PostStopped,
+        "ᶿ" => DentalFricativeRelease,
+        "ˡ" => LateralRelease,
+        "ˣ" => VelarFricativeRelease,
+        "ᵊ" => SchwaRelease,
+        "̥" => Voiceless,
+        "̊" => Voiceless,
+        "̬" => Voiced,
+        "̤" => Breathy,
+        "̰" => Creaky,
+        "̪" => Dental,
+        "͆" => Dental,
+        "̼" => Linguolabial,
+        "̺" => Apical,
+        "̻" => Laminal,
+        "̟" => Advanced,
+        "̠" => Retracted,
+        "˖" => Advanced,
+        "˗" => Retracted,
+        "̈" => Centralized,
+        "̽" => MidCentralized,
+        "̝" => Raised,
+        "˔" => Raised,
+        "̞" => Lowered,
+        "˕" => Lowered,
+        "̹" => OverRounded,
+        "͗" => OverRounded,
+        "̜" => UnderRounded,
+        "͑" => UnderRounded,
+        "ʷ" => Labialized,
+        "ʲ" => Palatalized,
+        "ˠ" => Velarized,
+        "̴" => Velarized,
+        "ˤ" => Pharyngealized,
+        "̘" => AdvancedTongueRoot,
+        "̙" => RetractedTongueRoot,
+        "̃" => Nasalized,
+        "˞" => Rhotacized,
+        "ʴ" => Rhotacized,
+        "ʵ" => Rhotacized,
+        "ʱ" => Breathy,
+        "ː" => Long,
+        ":" => Long,
+        "̋" => ExtraHigh,
+        "́" => High,
+        "̄" => Mid,
+        "̀" => Low,
+        "̏" => ExtraLow,
+        "̌" => Rising,
+        "̂" => Falling,
+        "᷄" => HighRising,
+        "᷅" => LowRising,
+        "᷈" => RisingFalling,
+        "ˑ" => HalfLong,
+        "̆" => ExtraShort,
+        "˥" => ExtraHigh,
+        "˦" => High,
+        "˧" => Mid,
+        "˨" => Low,
+        "˩" => ExtraLow,
+        "˩˥" => Rising,
+        "˥˩" => Falling,
+        "˦˥" => HighRising,
+        "˩˨" => LowRising,
+        "˧˦˧" => RisingFalling,
+    }
+};
+
+pub struct Phoneme {
     features: HashSet<Feature>,
     modifiers: HashSet<Modifier>,
+    // todo: make borrowed?
+    representation: String,
 }
+
+impl Phoneme {
+    pub fn from(ipa: String) -> Self {
+        let ipa: String = ipa.nfd().collect();
+        
+
+        todo!()
+    }
+}
+
