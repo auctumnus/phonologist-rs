@@ -3,13 +3,15 @@
 //! which takes an IPA string and returns a `Phoneme` struct containing the features and modifiers of
 //! the phoneme, as well as any warnings that were generated during parsing.
 
-use std::collections::HashSet;
+use std::{borrow::Cow, collections::{HashSet, VecDeque}};
 use unicode_normalization::UnicodeNormalization;
 
 pub mod data;
 pub mod feature;
 use data::{PHONEMES, POLYPHTHONG_COMPONENTS, POSTFIX_MODIFIERS, PREFIX_MODIFIERS, TONE_LETTERS};
 use feature::{ConsonantFeature, Depth, Feature, Height, Manner, Modifier, Place, VowelFeature};
+
+use crate::{data::{CLICKS, IMPLIED_MODIFIERS}, feature::PhonemeClass};
 
 #[derive(Clone, Debug)]
 /// A struct representing a phoneme.
@@ -30,13 +32,17 @@ pub struct Phoneme<T: Into<String> + Clone> {
     /// Tone letters will be stored here, in the order they appear in the IPA string.
     /// This does not include all possible tone modifiers - just the set ˩ ˨ ˧ ˦ ˥.
     tone_letters: Vec<Modifier>,
+    /// Whether this is a consonant or vowel.
+    /// (If we couldn't find any features at all, this won't be known.)
+    phoneme_class: Option<PhonemeClass>,
     // todo: make borrowed?
     /// The original IPA representation of the phoneme.
     representation: T,
 }
 
 impl<T: Into<String> + Clone> Phoneme<T> {
-    /// Parses an IPA string into a `Phoneme` struct. Returns any warnings generated during parsing.
+    /// Parses an IPA string into a `Phoneme` struct in a best-effort manner.
+    /// Returns any warnings generated during parsing.
     pub fn from(ipa: T) -> (Self, Vec<&'static str>) {
         let mut features = HashSet::new();
         let mut modifiers = HashSet::new();
@@ -52,6 +58,11 @@ impl<T: Into<String> + Clone> Phoneme<T> {
         'prefix_loop: loop {
             for (prefix, modifier) in PREFIX_MODIFIERS {
                 if let Some(rest) = ipa.strip_prefix(prefix) {
+                    if (*prefix == "ᵍ" || *prefix == "ᵏ")
+                        && CLICKS.iter().any(|c| rest.starts_with(c))
+                    {
+                        break 'prefix_loop;
+                    }
                     modifiers.insert(*modifier);
                     ipa = rest;
                     continue 'prefix_loop;
@@ -77,11 +88,8 @@ impl<T: Into<String> + Clone> Phoneme<T> {
             if let Some(rest) = ipa.strip_prefix(phoneme) {
                 features.extend(f.iter().copied());
                 ipa = rest;
-                if *phoneme == "ɚ" || *phoneme == "ɝ" {
-                    modifiers.insert(Modifier::Rhotacized);
-                }
-                if *phoneme == "ɫ" {
-                    modifiers.insert(Modifier::SecondaryArticulation(feature::SecondaryArticulation::Velarized));
+                if let Some(m) = IMPLIED_MODIFIERS.get(phoneme) {
+                    modifiers.extend(m.iter());
                 }
                 break;
             }
@@ -138,6 +146,8 @@ impl<T: Into<String> + Clone> Phoneme<T> {
             warnings.push("leftover characters after parsing phoneme");
         }
 
+        let phoneme_class = features.iter().next().map(Feature::phoneme_class);
+
         let phoneme = Self {
             features,
             modifiers,
@@ -145,6 +155,7 @@ impl<T: Into<String> + Clone> Phoneme<T> {
             off_glides,
             representation,
             tone_letters,
+            phoneme_class
         };
 
         (phoneme, warnings)
@@ -187,6 +198,37 @@ impl<T: Into<String> + Clone> Phoneme<T> {
     // (which is sad, because that's the best tone...)
     pub fn tone_letters(&self) -> &Vec<Modifier> {
         &self.tone_letters
+    }
+
+    pub fn class(&self) -> Option<PhonemeClass> {
+        self.phoneme_class
+    }
+
+    pub fn is_consonant(&self) -> bool {
+        self.phoneme_class == Some(PhonemeClass::Consonant)
+    }
+
+    pub fn is_vowel(&self) -> bool {
+        self.phoneme_class == Some(PhonemeClass::Vowel)
+    }
+
+    pub fn name(&self) -> String {
+        let expected_parts = self.features.len() + self.modifiers.len() + 1;
+        let mut parts = VecDeque::with_capacity(expected_parts);
+        let mut features: Vec<_> = self.features.iter().copied().collect();
+        features.sort();
+        for feature in features {
+            parts.push_back(feature.into());
+        }
+        for modifier in &self.modifiers {
+            modifier.apply_modifier(&mut parts);
+        }
+
+        if self.phoneme_class == Some(PhonemeClass::Vowel) {
+            parts.push_back("vowel")
+        }
+        
+        parts.make_contiguous().join(" ")
     }
 }
 
@@ -256,7 +298,18 @@ mod tests {
                 .contains(&Feature::Vowel(VowelFeature::Depth(Depth::Front)))
         );
         assert!(phoneme.tone_letters().contains(&Modifier::Tone(Tone::Mid)));
-        assert!(phoneme.tone_letters().contains(&Modifier::Tone(Tone::ExtraHigh)));
+        assert!(
+            phoneme
+                .tone_letters()
+                .contains(&Modifier::Tone(Tone::ExtraHigh))
+        );
         assert_eq!(*(phoneme.representation()), "a˧˥");
+    }
+
+    #[test]
+    fn name_simple() {
+        let (phoneme, warnings) = Phoneme::from("t");
+        assert!(warnings.is_empty());
+        assert_eq!(phoneme.name(), "alveolar stop");
     }
 }

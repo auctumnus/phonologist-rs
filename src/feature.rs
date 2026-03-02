@@ -1,6 +1,22 @@
+//! Types for representing phonological features.
+
+use std::{borrow::Cow, collections::VecDeque, fmt::Display};
+
+macro_rules! display_for_static_str {
+    ($ty:ident) => {
+        impl $ty {
+            /// Returns a human-friendly representation.
+            pub fn name(&self) -> &'static str {
+                self.into()
+            }
+        }
+    }
+}
+
 /// The place of articulation of a consonant.
 /// See <https://en.wikipedia.org/wiki/Place_of_articulation>.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr)]
+#[strum(serialize_all = "kebab-case")]
 pub enum Place {
     /// See <https://en.wikipedia.org/wiki/Bilabial_consonant>.
     Bilabial,
@@ -26,6 +42,8 @@ pub enum Place {
     Uvular,
     /// See <https://en.wikipedia.org/wiki/Pharyngeal_consonant>.
     Pharyngeal,
+    /// See <https://en.wikipedia.org/wiki/Epiglottal_consonant>.
+    Epiglottal,
     /// See <https://en.wikipedia.org/wiki/Glottal_consonant>.
     Glottal,
 }
@@ -33,22 +51,54 @@ pub enum Place {
 /// Whether a consonant is lateral or not.
 ///
 /// See <https://en.wikipedia.org/wiki/Lateral_consonant>.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr)]
 pub enum Airstream {
+    /// See <https://en.wikipedia.org/wiki/Median_consonant>.
+    #[strum(serialize = "")]
     Median,
+    #[strum(serialize = "lateral ")]
     Lateral,
 }
 
-/// Whether a consonant is sibilant or not.
-/// See <https://en.wikipedia.org/wiki/Sibilant_consonant>.
+/// The type of fricative involved in this sound. 
+/// 
+/// See <https://en.wikipedia.org/wiki/Fricative>.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum Sibilancy {
-    NonSibilant,
+pub enum FricativeKind {
+    /// See <https://en.wikipedia.org/wiki/Sibilant>.
     Sibilant,
+    NonSibilant(Airstream)
+}
+
+impl From<FricativeKind> for &'static str {
+    fn from(value: FricativeKind) -> Self {
+        match value {
+            FricativeKind::Sibilant => "sibilant",
+            FricativeKind::NonSibilant(Airstream::Median) => "fricative",
+            FricativeKind::NonSibilant(Airstream::Lateral) => "lateral fricative",
+        }
+    }
+}
+
+impl<'a> From<&'a FricativeKind> for &'static str {
+    fn from(value: &'a FricativeKind) -> Self {
+        (*value).into()
+    }
+}
+
+display_for_static_str!(FricativeKind);
+
+/// The rear articulation of a click consonant.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr)]
+pub enum RearArticulation {
+    #[strum(serialize = "")]
+    Velar,
+    #[strum(serialize = "uvular ")]
+    Uvular,
 }
 
 /// The manner of articulation of a consonant.
-/// 
+///
 /// See <https://en.wikipedia.org/wiki/Manner_of_articulation>.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Manner {
@@ -57,26 +107,62 @@ pub enum Manner {
     /// See <https://en.wikipedia.org/wiki/Stop_consonant>.
     Stop,
     /// See <https://en.wikipedia.org/wiki/Affricate>.
-    Affricate(Airstream, Sibilancy),
-    /// See <https://en.wikipedia.org/wiki/Lateral_affricate>.
-    LateralAffricate,
+    Affricate(FricativeKind),
     /// See <https://en.wikipedia.org/wiki/Fricative>.
-    Fricative(Airstream, Sibilancy),
-    /// See <https://en.wikipedia.org/wiki/Lateral_fricative>.
-    LateralFricative,
+    Fricative(FricativeKind),
     /// See <https://en.wikipedia.org/wiki/Trill_consonant>.
     Trill,
     /// See <https://en.wikipedia.org/wiki/Flap_consonant>.
-    Flap,
+    Flap(Airstream),
+    /// See <https://en.wikipedia.org/wiki/Implosive_consonant>.
+    Implosive,
     /// See <https://en.wikipedia.org/wiki/Approximant>.
     Approximant(Airstream),
     /// See <https://en.wikipedia.org/wiki/Click_consonant>.
-    Click,
+    Click(RearArticulation),
 }
+
+impl From<Manner> for &'static str {
+    fn from(value: Manner) -> Self {
+        use Manner::*;
+        use Airstream::*;
+        use FricativeKind::*;
+        use RearArticulation::*;
+        match value {
+            Nasal => "nasal",
+            Stop => "stop",
+            Trill => "trill",
+            Implosive => "implosive",
+            Approximant(Median) => "approximant", 
+            Approximant(Lateral) => "lateral approximant",
+            Flap(Median) => "flap",
+            Flap(Lateral) => "lateral flap",
+            Click(Velar) => "click",
+            Click(Uvular) => "uvular click",
+            Affricate(kind) => match kind {
+                Sibilant | NonSibilant(Median) => "affricate",
+                NonSibilant(Lateral) => "lateral affricate",
+            },
+            Fricative(kind) => match kind {
+                Sibilant | NonSibilant(Median) => "fricative",
+                NonSibilant(Lateral) => "lateral fricative",
+            },
+        }
+    }
+}
+
+impl<'a> From<&'a Manner> for &'static str {
+    fn from(value: &'a Manner) -> Self {
+        (*value).into()
+    }
+}
+
+display_for_static_str!(Manner);
 
 /// The height, or openness, of a vowel.
 /// See <https://en.wikipedia.org/wiki/Vowel#Height>.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr)]
+#[strum(serialize_all = "kebab-case")]
 pub enum Height {
     Close,
     NearClose,
@@ -87,9 +173,12 @@ pub enum Height {
     Open,
 }
 
+display_for_static_str!(Height);
+
 /// The depth of a vowel.
 /// See <https://en.wikipedia.org/wiki/Vowel#Backness>.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr)]
+#[strum(serialize_all = "kebab-case")]
 pub enum Depth {
     Front,
     NearFront,
@@ -98,14 +187,67 @@ pub enum Depth {
     Back,
 }
 
+display_for_static_str!(Depth);
+
 /// Phonological features pertaining to consonants.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum ConsonantFeature {
+    Voiced,
     Place(Place),
     DoubleArticulation(Place, Place),
     Manner(Manner),
-    Voiced,
 }
+
+macro_rules! place_pairs {
+    ($p1:expr, $p2:expr; $(($variant:ident, $name:expr)),* $(,)?) => {{
+        macro_rules! inner {
+            ($lhs_variant:ident, $lhs_name:expr) => {
+                match $p2 {
+                    $(crate::feature::Place::$variant => concat!($lhs_name, "-", $name),)*
+                }
+            };
+        }
+        match $p1 {
+            $(crate::feature::Place::$variant => inner!($variant, $name),)*
+        }
+    }};
+}
+
+impl From<ConsonantFeature> for &'static str {
+    fn from(value: ConsonantFeature) -> Self {
+        use ConsonantFeature::*;
+
+        match value {
+            Voiced => "voiced",
+            Place(p) => p.into(),
+            Manner(m) => m.into(),
+            DoubleArticulation(p1, p2) => place_pairs!(p1, p2;
+                (Bilabial, "labial"),
+                (Labiodental, "labiodental"),
+                (Linguolabial, "linguolabial"),
+                (Dental, "dental"),
+                (Alveolar, "alveolar"),
+                (PostAlveolar, "post-alveolar"),
+                (Alveolopalatal, "alveolopalatal"),
+                (Retroflex, "retroflex"),
+                (Palatal, "palatal"),
+                (Velar, "velar"),
+                (Uvular, "uvular"),
+                (Pharyngeal, "pharyngeal"),
+                (Epiglottal, "epiglottal"),
+                (Glottal, "glottal"),
+            ),
+        }
+    }
+}
+
+impl<'a> From<&'a ConsonantFeature> for &'static str {
+    fn from(value: &'a ConsonantFeature) -> Self {
+        (*value).into()
+    }
+}
+
+display_for_static_str!(ConsonantFeature);
 
 /// Phonological features pertaining to vowels.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -115,6 +257,24 @@ pub enum VowelFeature {
     Rounded,
 }
 
+impl From<VowelFeature> for &'static str {
+    fn from(value: VowelFeature) -> Self {
+        match value {
+            VowelFeature::Height(h) => h.into(),
+            VowelFeature::Depth(d) => d.into(),
+            VowelFeature::Rounded => "rounded"
+        }
+    }
+}
+
+impl<'a> From<&'a VowelFeature> for &'static str {
+    fn from(value: &'a VowelFeature) -> Self {
+        (*value).into()
+    }
+}
+
+display_for_static_str!(VowelFeature);
+
 /// Phonological features.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Feature {
@@ -122,8 +282,36 @@ pub enum Feature {
     Vowel(VowelFeature),
 }
 
+impl From<Feature> for &'static str {
+    fn from(value: Feature) -> Self {
+        match value {
+            Feature::Consonant(f) => f.into(),
+            Feature::Vowel(f) => f.into()
+        }
+    }
+}
+
+impl<'a> From<&'a Feature> for &'static str {
+    fn from(value: &'a Feature) -> Self {
+        (*value).into()
+    }
+}
+
+display_for_static_str!(Feature);
+
+impl Feature {
+    /// Returns which `PhonemeClass` this feature is from.
+    pub fn phoneme_class(&self) -> PhonemeClass {
+        match self {
+            Feature::Consonant(_) => PhonemeClass::Consonant,
+            Feature::Vowel(_) => PhonemeClass::Vowel,
+        }
+    }
+}
+
 /// See <https://en.wikipedia.org/wiki/Voice_(phonetics)>.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr)]
+#[strum(serialize_all = "lowercase", suffix = " voice")]
 pub enum Voice {
     /// Occasionally, notation like /d̥/ may actually indicate a fortis/lenis distinction.
     Voiceless,
@@ -148,8 +336,11 @@ pub enum Voice {
     Ventricular,
 }
 
+display_for_static_str!(Voice);
+
 /// See <https://en.wikipedia.org/wiki/Relative_articulation>.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr)]
+#[strum(serialize_all = "kebab-case")]
 pub enum RelativeArticulation {
     /// See <https://en.wikipedia.org/wiki/Relative_articulation#Advanced_and_retracted>.
     Advanced,
@@ -169,8 +360,11 @@ pub enum RelativeArticulation {
     UnderRounded,
 }
 
+display_for_static_str!(RelativeArticulation);
+
 /// See <https://en.wikipedia.org/wiki/Secondary_articulation>.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr)]
+#[strum(serialize_all = "kebab-case")]
 pub enum SecondaryArticulation {
     /// See <https://en.wikipedia.org/wiki/Labialization>.
     Labialized,
@@ -186,9 +380,12 @@ pub enum SecondaryArticulation {
     Epiglottalized,
 }
 
+display_for_static_str!(SecondaryArticulation);
+
 /// See <https://en.wikipedia.org/wiki/Vowel_length>.
 /// Length::Long also marks geminate consonants; see <https://en.wikipedia.org/wiki/Gemination>.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr)]
+#[strum(serialize_all = "kebab-case")]
 pub enum Length {
     Long,
     HalfLong,
@@ -196,8 +393,11 @@ pub enum Length {
     ExtraShort,
 }
 
+display_for_static_str!(Length);
+
 /// See <https://en.wikipedia.org/wiki/Tone_(linguistics)>.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr)]
+#[strum(serialize_all = "kebab-case", prefix = "with", suffix = " tone")]
 pub enum Tone {
     ExtraHigh,
     High,
@@ -211,10 +411,14 @@ pub enum Tone {
     RisingFalling,
 }
 
+display_for_static_str!(Tone);
+
 /// The release of a consonant.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr)]
+#[strum(serialize_all = "lowercase", prefix = "with", suffix = " release")]
 pub enum Release {
     /// See <https://en.wikipedia.org/wiki/No_audible_release>.
+    #[strum(serialize = "no audible")]
     None,
     /// Usually notates "excrescent schwas".
     Schwa,
@@ -222,17 +426,24 @@ pub enum Release {
     Lateral,
     /// See <https://en.wikipedia.org/wiki/Nasal_release>.
     Nasal,
+    #[strum(serialize = "dental fricative")]
     DentalFricative,
     /// As in <https://en.wikipedia.org/wiki/Lakota_language#Phonology>.
+    #[strum(serialize = "velar fricative")]
     VelarFricative,
 }
 
+display_for_static_str!(Release);
+
 /// See <https://en.wikipedia.org/wiki/Advanced_and_retracted_tongue_root>.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr)]
+#[strum(serialize_all = "lowercase", prefix = "with", suffix = " tongue root")]
 pub enum TongueRoot {
     Advanced,
     Retracted,
 }
+
+display_for_static_str!(TongueRoot);
 
 /// Modifiers are usually represented as diacritics in IPA, but can also be tone letters or other markers.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -277,4 +488,84 @@ pub enum Modifier {
     Tone(Tone),
     /// See <https://en.wikipedia.org/wiki/Vowel_length>.
     Length(Length),
+    /// See <https://en.wikipedia.org/wiki/Ejective_consonant>.
+    Ejective,
+}
+
+impl From<Modifier> for &'static str {
+    fn from(value: Modifier) -> Self {
+        use Modifier::*;
+        match value {
+            NonSyllabic => "non-syllabic",
+            Syllabic => "syllabic",
+            Aspirated => "aspirated",
+            PreAspirated => "pre-aspirated",
+            Release(v) => v.into(),
+            PreNasalized => "pre-nasalized",
+            PostStopped => "post-stopped",
+            PreStopped => "pre-stopped",
+            VelarFricativeOnset => "with velar fricative onset",
+            Voice(v) => v.into(),
+            SecondaryArticulation(v) => v.into(),
+            Dental => "dental",
+            Linguolabial => "linguolabial",
+            Apical => "apical",
+            Laminal => "laminal",
+            RelativeArticulation(v) => v.into(),
+            TongueRoot(v) => v.into(),
+            Nasalized => "nasalized",
+            Rhotacized => "rhotacized",
+            Tone(v) => v.into(),
+            Length(v) => v.into(),
+            Ejective => "ejective",
+        }
+    }
+}
+
+impl<'a> From<&'a Modifier> for &'static str {
+    fn from(value: &'a Modifier) -> Self {
+        (*value).into()
+    }
+}
+
+display_for_static_str!(Modifier);
+
+impl Modifier {
+    pub(crate) fn apply_modifier(&self, name: &mut VecDeque<&str>) {
+        use Modifier::*;
+        enum Affix {
+            Prefix,
+            Suffix
+        }
+        let direction = match self {
+            NonSyllabic | Syllabic | Aspirated => Affix::Prefix,
+            Release(_) | VelarFricativeOnset => Affix::Suffix,
+            _ => todo!()
+        };
+        match direction {
+            Affix::Prefix => name.push_front(self.into()),
+            Affix::Suffix => name.push_back(self.into()),
+        }
+    }
+}
+
+/// The principal classes of speech sounds.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr)]
+#[strum(serialize_all = "lowercase")]
+pub enum PhonemeClass {
+    Consonant,
+    Vowel
+}
+
+display_for_static_str!(PhonemeClass);
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn name_labial_velar() {
+        let labial_velar = ConsonantFeature::DoubleArticulation(Place::Bilabial, Place::Velar);
+        assert_eq!("labial-velar", Into::<&'static str>::into(labial_velar));
+    }
 }

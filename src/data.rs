@@ -6,54 +6,68 @@
 pub static PHONEMES: &[(&str, &[crate::Feature])] = {
     use crate::ConsonantFeature::*;
     use crate::Depth::*;
-    use crate::feature::Airstream::*;
-    use crate::feature::Sibilancy::*;
     use crate::Feature::*;
     use crate::Height::*;
     use crate::Manner::*;
     use crate::Place::*;
     use crate::VowelFeature::*;
+    use crate::feature::Airstream::*;
+    use crate::feature::RearArticulation;
+    use crate::feature::FricativeKind::*;
+
 
     // must be ordered longest to shortest, otherwise the longest match will be missed
     &[
         // 2-char affricates with over-tie
         (
             "p͡ɸ",
-            &[Consonant(Place(Bilabial)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "b͡β",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "p͡f",
-            &[Consonant(Place(Labiodental)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Labiodental)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "b͡v",
             &[
                 Consonant(Place(Labiodental)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "t̪͡θ",
-            &[Consonant(Place(Dental)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "t͡θ",
-            &[Consonant(Place(Dental)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "d͡ð",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
@@ -61,43 +75,52 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "d̪͡ð",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "t͡s",
-            &[Consonant(Place(Alveolar)), Consonant(Manner(Affricate(Median, Sibilant)))],
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Affricate(Sibilant))),
+            ],
         ),
         (
             "d͡z",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
         (
             "t͡ɬ",
-            &[Consonant(Place(Alveolar)), Consonant(Manner(LateralAffricate))],
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Affricate(NonSibilant(Lateral)))),
+            ],
         ),
         (
             "d͡ɮ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(LateralAffricate)),
+                Consonant(Manner(Affricate(NonSibilant(Lateral)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "t͡ʃ",
-            &[Consonant(Place(PostAlveolar)), Consonant(Manner(Affricate(Median, Sibilant)))],
+            &[
+                Consonant(Place(PostAlveolar)),
+                Consonant(Manner(Affricate(Sibilant))),
+            ],
         ),
         (
             "d͡ʒ",
             &[
                 Consonant(Place(PostAlveolar)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
@@ -105,14 +128,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "t͡ɕ",
             &[
                 Consonant(Place(Alveolopalatal)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
             ],
         ),
         (
             "d͡ʑ",
             &[
                 Consonant(Place(Alveolopalatal)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
@@ -120,38 +143,44 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ȶ͡ɕ",
             &[
                 Consonant(Place(Alveolopalatal)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
             ],
         ),
         (
             "ȡ͡ʑ",
             &[
                 Consonant(Place(Alveolopalatal)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
         (
             "ʈ͡ʂ",
-            &[Consonant(Place(Retroflex)), Consonant(Manner(Affricate(Median, Sibilant)))],
+            &[
+                Consonant(Place(Retroflex)),
+                Consonant(Manner(Affricate(Sibilant))),
+            ],
         ),
         (
             "ɖ͡ʐ",
             &[
                 Consonant(Place(Retroflex)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
         (
             "ʈ͡ꞎ",
-            &[Consonant(Place(Retroflex)), Consonant(Manner(LateralAffricate))],
+            &[
+                Consonant(Place(Retroflex)),
+                Consonant(Manner(Affricate(NonSibilant(Lateral)))),
+            ],
         ),
         (
             "ɖ͡𝼅",
             &[
                 Consonant(Place(Retroflex)),
-                Consonant(Manner(LateralAffricate)),
+                Consonant(Manner(Affricate(NonSibilant(Lateral)))),
                 Consonant(Voiced),
             ],
         ),
@@ -159,84 +188,576 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɖ͡ɭ˔",
             &[
                 Consonant(Place(Retroflex)),
-                Consonant(Manner(LateralAffricate)),
+                Consonant(Manner(Affricate(NonSibilant(Lateral)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "c͡ç",
-            &[Consonant(Place(Palatal)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "ɟ͡ʝ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "k͡x",
-            &[Consonant(Place(Velar)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Velar)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "g͡ɣ",
             &[
                 Consonant(Place(Velar)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "q͡χ",
-            &[Consonant(Place(Uvular)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Uvular)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "ɢ͡ʁ",
             &[
                 Consonant(Place(Uvular)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+                Consonant(Voiced),
+            ],
+        ),
+        // epiglottal affricates with over-tie
+        (
+            "ʡ͡ʜ",
+            &[
+                Consonant(Place(Epiglottal)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
+        ),
+        (
+            "ʡ͡ʢ",
+            &[
+                Consonant(Place(Epiglottal)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+                Consonant(Voiced),
+            ],
+        ),
+        // glottal affricate with over-tie
+        (
+            "ʔ͡h",
+            &[
+                Consonant(Place(Glottal)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
+        ),
+        // palatal lateral affricates with over-tie
+        (
+            "c͡𝼆",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Affricate(NonSibilant(Lateral)))),
+            ],
+        ),
+        (
+            "ɟ͡ʎ̝",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Affricate(NonSibilant(Lateral)))),
+                Consonant(Voiced),
+            ],
+        ),
+        // velar lateral affricates with over-tie
+        (
+            "k͡𝼄",
+            &[Consonant(Place(Velar)), Consonant(Manner(Affricate(NonSibilant(Lateral))))],
+        ),
+        (
+            "ɡ͡ʟ̝",
+            &[
+                Consonant(Place(Velar)),
+                Consonant(Manner(Affricate(NonSibilant(Lateral)))),
+                Consonant(Voiced),
+            ],
+        ),
+        // click consonants with over-tie — velar accompaniment
+        (
+            "k͡ʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͡ʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͡ʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "k͡ǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͡ǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͡ǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "k͡ǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͡ǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͡ǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "k͡ǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͡ǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͡ǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "k͡ǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͡ǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͡ǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        // click consonants with over-tie — velar accompaniment (alternate transcriptions)
+        (
+            "k͡ʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͡ʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͡ʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "k͡𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͡𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͡𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "k͡ʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͡ʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͡ʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "k͡ʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͡ʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͡ʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        // click consonants with over-tie — uvular accompaniment
+        (
+            "q͡ʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͡ʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͡ʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "q͡ǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͡ǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͡ǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "q͡ǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͡ǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͡ǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "q͡ǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͡ǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͡ǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "q͡ǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͡ǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͡ǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        // click consonants with over-tie — uvular accompaniment (alternate transcriptions)
+        (
+            "q͡ʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͡ʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͡ʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "q͡𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͡𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͡𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "q͡ʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͡ʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͡ʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "q͡ʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͡ʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͡ʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
         // 2-char affricates with under-tie
         (
             "p͜ɸ",
-            &[Consonant(Place(Bilabial)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "b͜β",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "p͜f",
-            &[Consonant(Place(Labiodental)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Labiodental)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "b͜v",
             &[
                 Consonant(Place(Labiodental)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "t͜θ",
-            &[Consonant(Place(Dental)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "t̪͜θ",
-            &[Consonant(Place(Dental)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "d͜ð",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
@@ -244,31 +765,37 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "d̪͜ð",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "t͜s",
-            &[Consonant(Place(Alveolar)), Consonant(Manner(Affricate(Median, Sibilant)))],
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Affricate(Sibilant))),
+            ],
         ),
         (
             "d͜z",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
         (
             "t͜ʃ",
-            &[Consonant(Place(PostAlveolar)), Consonant(Manner(Affricate(Median, Sibilant)))],
+            &[
+                Consonant(Place(PostAlveolar)),
+                Consonant(Manner(Affricate(Sibilant))),
+            ],
         ),
         (
             "d͜ʒ",
             &[
                 Consonant(Place(PostAlveolar)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
@@ -276,14 +803,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "t͜ɕ",
             &[
                 Consonant(Place(Alveolopalatal)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
             ],
         ),
         (
             "d͜ʑ",
             &[
                 Consonant(Place(Alveolopalatal)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
@@ -291,127 +818,628 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ȶ͜ɕ",
             &[
                 Consonant(Place(Alveolopalatal)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
             ],
         ),
         (
             "ȡ͜ʑ",
             &[
                 Consonant(Place(Alveolopalatal)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
         (
             "ʈ͜ʂ",
-            &[Consonant(Place(Retroflex)), Consonant(Manner(Affricate(Median, Sibilant)))],
+            &[
+                Consonant(Place(Retroflex)),
+                Consonant(Manner(Affricate(Sibilant))),
+            ],
         ),
         (
             "ɖ͜ʐ",
             &[
                 Consonant(Place(Retroflex)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
         (
             "c͜ç",
-            &[Consonant(Place(Palatal)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "ɟ͜ʝ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "k͜x",
-            &[Consonant(Place(Velar)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Velar)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "g͜ɣ",
             &[
                 Consonant(Place(Velar)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "q͜χ",
-            &[Consonant(Place(Uvular)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Uvular)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "ɢ͜ʁ",
             &[
                 Consonant(Place(Uvular)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+                Consonant(Voiced),
+            ],
+        ),
+        // epiglottal affricates with under-tie
+        (
+            "ʡ͜ʜ",
+            &[
+                Consonant(Place(Epiglottal)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
+        ),
+        (
+            "ʡ͜ʢ",
+            &[
+                Consonant(Place(Epiglottal)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+                Consonant(Voiced),
+            ],
+        ),
+        // glottal affricate with under-tie
+        (
+            "ʔ͜h",
+            &[
+                Consonant(Place(Glottal)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
+        ),
+        // palatal lateral affricates with under-tie
+        (
+            "c͜𝼆",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Affricate(NonSibilant(Lateral)))),
+            ],
+        ),
+        (
+            "ɟ͜ʎ̝",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Affricate(NonSibilant(Lateral)))),
+                Consonant(Voiced),
+            ],
+        ),
+        // velar lateral affricates with under-tie
+        (
+            "k͜𝼄",
+            &[Consonant(Place(Velar)), Consonant(Manner(Affricate(NonSibilant(Lateral))))],
+        ),
+        (
+            "ɡ͜ʟ̝",
+            &[
+                Consonant(Place(Velar)),
+                Consonant(Manner(Affricate(NonSibilant(Lateral)))),
+                Consonant(Voiced),
+            ],
+        ),
+        // click consonants with under-tie — velar accompaniment
+        (
+            "k͜ʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͜ʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͜ʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "k͜ǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͜ǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͜ǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "k͜ǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͜ǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͜ǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "k͜ǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͜ǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͜ǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "k͜ǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͜ǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͜ǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        // click consonants with under-tie — velar accompaniment (alternate transcriptions)
+        (
+            "k͜ʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͜ʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͜ʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "k͜𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͜𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͜𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "k͜ʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͜ʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͜ʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "k͜ʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ͜ʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ͜ʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        // click consonants with under-tie — uvular accompaniment
+        (
+            "q͜ʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͜ʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͜ʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "q͜ǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͜ǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͜ǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "q͜ǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͜ǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͜ǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "q͜ǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͜ǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͜ǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "q͜ǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͜ǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͜ǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        // click consonants with under-tie — uvular accompaniment (alternate transcriptions)
+        (
+            "q͜ʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͜ʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͜ʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "q͜𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͜𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͜𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "q͜ʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͜ʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͜ʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "q͜ʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ͜ʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ͜ʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
         // 2-char affricates
         (
             "pɸ",
-            &[Consonant(Place(Bilabial)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "bβ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "pf",
-            &[Consonant(Place(Labiodental)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Labiodental)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "bv",
             &[
                 Consonant(Place(Labiodental)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "tθ",
-            &[Consonant(Place(Dental)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "t̪θ",
-            &[Consonant(Place(Dental)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "d̪ð",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "ts",
-            &[Consonant(Place(Alveolar)), Consonant(Manner(Affricate(Median, Sibilant)))],
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Affricate(Sibilant))),
+            ],
         ),
         (
             "dz",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
         (
             "tʃ",
-            &[Consonant(Place(PostAlveolar)), Consonant(Manner(Affricate(Median, Sibilant)))],
+            &[
+                Consonant(Place(PostAlveolar)),
+                Consonant(Manner(Affricate(Sibilant))),
+            ],
         ),
         (
             "dʒ",
             &[
                 Consonant(Place(PostAlveolar)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
@@ -419,14 +1447,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "tɕ",
             &[
                 Consonant(Place(Alveolopalatal)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
             ],
         ),
         (
             "dʑ",
             &[
                 Consonant(Place(Alveolopalatal)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
@@ -434,62 +1462,516 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ȶɕ",
             &[
                 Consonant(Place(Alveolopalatal)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
             ],
         ),
         (
             "ȡʑ",
             &[
                 Consonant(Place(Alveolopalatal)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
         (
             "ʈʂ",
-            &[Consonant(Place(Retroflex)), Consonant(Manner(Affricate(Median, Sibilant)))],
+            &[
+                Consonant(Place(Retroflex)),
+                Consonant(Manner(Affricate(Sibilant))),
+            ],
         ),
         (
             "ɖʐ",
             &[
                 Consonant(Place(Retroflex)),
-                Consonant(Manner(Affricate(Median, Sibilant))),
+                Consonant(Manner(Affricate(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
         (
             "cç",
-            &[Consonant(Place(Palatal)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "ɟʝ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "kx",
-            &[Consonant(Place(Velar)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Velar)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "gɣ",
             &[
                 Consonant(Place(Velar)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
         (
             "qχ",
-            &[Consonant(Place(Uvular)), Consonant(Manner(Affricate(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Uvular)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
         ),
         (
             "ɢʁ",
             &[
                 Consonant(Place(Uvular)),
-                Consonant(Manner(Affricate(Median, NonSibilant))),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+                Consonant(Voiced),
+            ],
+        ),
+        // epiglottal affricates (no tie bar)
+        (
+            "ʡʜ",
+            &[
+                Consonant(Place(Epiglottal)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
+        ),
+        (
+            "ʡʢ",
+            &[
+                Consonant(Place(Epiglottal)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+                Consonant(Voiced),
+            ],
+        ),
+        // glottal affricate (no tie bar)
+        (
+            "ʔh",
+            &[
+                Consonant(Place(Glottal)),
+                Consonant(Manner(Affricate(NonSibilant(Median)))),
+            ],
+        ),
+        // click consonants (no tie bar) — velar accompaniment
+        (
+            "kʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "kǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "kǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "kǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "kǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        // click consonants (no tie bar) — uvular accompaniment
+        (
+            "qʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "qǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "qǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "qǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "qǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        // click consonants (no tie bar) — velar accompaniment (alternate transcriptions)
+        (
+            "kʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "k𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡ𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋ𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "kʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "kʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ɡʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ŋʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        // click consonants (no tie bar) — uvular accompaniment (alternate transcriptions)
+        (
+            "qʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "q𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢ𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴ𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "qʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "qʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+            ],
+        ),
+        (
+            "ɢʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɴʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -513,13 +1995,16 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
         ),
         (
             "ɸ",
-            &[Consonant(Place(Bilabial)), Consonant(Manner(Fricative(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
+            ],
         ),
         (
             "β",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Fricative(Median, NonSibilant))),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
@@ -528,6 +2013,22 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             &[
                 Consonant(Place(Bilabial)),
                 Consonant(Manner(Trill)),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ⱱ̟",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Flap(Median))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɓ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Implosive)),
                 Consonant(Voiced),
             ],
         ),
@@ -542,13 +2043,16 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
         ),
         (
             "f",
-            &[Consonant(Place(Labiodental)), Consonant(Manner(Fricative(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Labiodental)),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
+            ],
         ),
         (
             "v",
             &[
                 Consonant(Place(Labiodental)),
-                Consonant(Manner(Fricative(Median, NonSibilant))),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
@@ -560,16 +2064,27 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
+        (
+            "ⱱ",
+            &[
+                Consonant(Place(Labiodental)),
+                Consonant(Manner(Flap(Median))),
+                Consonant(Voiced),
+            ],
+        ),
         // dental
         (
             "θ",
-            &[Consonant(Place(Dental)), Consonant(Manner(Fricative(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
+            ],
         ),
         (
             "ð",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Fricative(Median, NonSibilant))),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
@@ -593,37 +2108,46 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
         ),
         (
             "s",
-            &[Consonant(Place(Alveolar)), Consonant(Manner(Fricative(Median, Sibilant)))],
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Fricative(Sibilant))),
+            ],
         ),
         (
             "z",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Fricative(Median, Sibilant))),
+                Consonant(Manner(Fricative(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
         (
             "ʃ",
-            &[Consonant(Place(PostAlveolar)), Consonant(Manner(Fricative(Median, Sibilant)))],
+            &[
+                Consonant(Place(PostAlveolar)),
+                Consonant(Manner(Fricative(Sibilant))),
+            ],
         ),
         (
             "ʒ",
             &[
                 Consonant(Place(PostAlveolar)),
-                Consonant(Manner(Fricative(Median, Sibilant))),
+                Consonant(Manner(Fricative(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
         (
             "ɬ",
-            &[Consonant(Place(Alveolar)), Consonant(Manner(LateralFricative))],
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Fricative(NonSibilant(Lateral)))),
+            ],
         ),
         (
             "ɮ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(LateralFricative)),
+                Consonant(Manner(Fricative(NonSibilant(Lateral)))),
                 Consonant(Voiced),
             ],
         ),
@@ -639,7 +2163,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɾ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Trill)),
+                Consonant(Manner(Flap(Median))),
                 Consonant(Voiced),
             ],
         ),
@@ -655,7 +2179,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɺ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Trill)),
+                Consonant(Manner(Flap(Lateral))),
                 Consonant(Voiced),
             ],
         ),
@@ -672,6 +2196,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             &[
                 Consonant(Place(Alveolar)),
                 Consonant(Manner(Approximant(Lateral))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Implosive)),
                 Consonant(Voiced),
             ],
         ),
@@ -700,14 +2232,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɕ",
             &[
                 Consonant(Place(Alveolopalatal)),
-                Consonant(Manner(Fricative(Median, Sibilant))),
+                Consonant(Manner(Fricative(Sibilant))),
             ],
         ),
         (
             "ʑ",
             &[
                 Consonant(Place(Alveolopalatal)),
-                Consonant(Manner(Fricative(Median, Sibilant))),
+                Consonant(Manner(Fricative(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
@@ -739,13 +2271,16 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
         ),
         (
             "ʂ",
-            &[Consonant(Place(Retroflex)), Consonant(Manner(Fricative(Median, Sibilant)))],
+            &[
+                Consonant(Place(Retroflex)),
+                Consonant(Manner(Fricative(Sibilant))),
+            ],
         ),
         (
             "ʐ",
             &[
                 Consonant(Place(Retroflex)),
-                Consonant(Manner(Fricative(Median, Sibilant))),
+                Consonant(Manner(Fricative(Sibilant))),
                 Consonant(Voiced),
             ],
         ),
@@ -753,7 +2288,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɽ",
             &[
                 Consonant(Place(Retroflex)),
-                Consonant(Manner(Trill)),
+                Consonant(Manner(Flap(Median))),
                 Consonant(Voiced),
             ],
         ),
@@ -770,6 +2305,21 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             &[
                 Consonant(Place(Retroflex)),
                 Consonant(Manner(Approximant(Lateral))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ꞎ",
+            &[
+                Consonant(Place(Retroflex)),
+                Consonant(Manner(Fricative(NonSibilant(Lateral)))),
+            ],
+        ),
+        (
+            "ᶑ",
+            &[
+                Consonant(Place(Retroflex)),
+                Consonant(Manner(Implosive)),
                 Consonant(Voiced),
             ],
         ),
@@ -793,13 +2343,16 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
         ),
         (
             "ç",
-            &[Consonant(Place(Palatal)), Consonant(Manner(Fricative(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
+            ],
         ),
         (
             "ʝ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Fricative(Median, NonSibilant))),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
@@ -827,6 +2380,29 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
+        (
+            "𝼆",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Fricative(NonSibilant(Lateral)))),
+            ],
+        ),
+        (
+            "ʎ̝",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Fricative(NonSibilant(Lateral)))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ʄ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Implosive)),
+                Consonant(Voiced),
+            ],
+        ),
         // velar
         ("k", &[Consonant(Place(Velar)), Consonant(Manner(Stop))]),
         (
@@ -847,13 +2423,16 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
         ),
         (
             "x",
-            &[Consonant(Place(Velar)), Consonant(Manner(Fricative(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Velar)),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
+            ],
         ),
         (
             "ɣ",
             &[
                 Consonant(Place(Velar)),
-                Consonant(Manner(Fricative(Median, NonSibilant))),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
@@ -870,7 +2449,6 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             &[
                 Consonant(Place(Velar)),
                 Consonant(Manner(Approximant(Median))),
-                Consonant(Voiced),
             ],
         ),
         (
@@ -886,6 +2464,34 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             &[
                 Consonant(Place(Velar)),
                 Consonant(Manner(Approximant(Lateral))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "𝼄",
+            &[Consonant(Place(Velar)), Consonant(Manner(Fricative(NonSibilant(Lateral))))],
+        ),
+        (
+            "ʟ̝",
+            &[
+                Consonant(Place(Velar)),
+                Consonant(Manner(Fricative(NonSibilant(Lateral)))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ʟ̆",
+            &[
+                Consonant(Place(Velar)),
+                Consonant(Manner(Flap(Lateral))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ɠ",
+            &[
+                Consonant(Place(Velar)),
+                Consonant(Manner(Implosive)),
                 Consonant(Voiced),
             ],
         ),
@@ -909,13 +2515,16 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
         ),
         (
             "χ",
-            &[Consonant(Place(Uvular)), Consonant(Manner(Fricative(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Uvular)),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
+            ],
         ),
         (
             "ʁ",
             &[
                 Consonant(Place(Uvular)),
-                Consonant(Manner(Fricative(Median, NonSibilant))),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
                 Consonant(Voiced),
             ],
         ),
@@ -927,16 +2536,44 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
+        (
+            "ʛ",
+            &[
+                Consonant(Place(Uvular)),
+                Consonant(Manner(Implosive)),
+                Consonant(Voiced),
+            ],
+        ),
         // pharyngeal
         (
             "ħ",
-            &[Consonant(Place(Pharyngeal)), Consonant(Manner(Fricative(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Pharyngeal)),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
+            ],
         ),
         (
             "ʕ",
             &[
                 Consonant(Place(Pharyngeal)),
-                Consonant(Manner(Fricative(Median, NonSibilant))),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
+                Consonant(Voiced),
+            ],
+        ),
+        // epiglottal
+        (
+            "ʡ",
+            &[Consonant(Place(Epiglottal)), Consonant(Manner(Stop))],
+        ),
+        (
+            "ʜ",
+            &[Consonant(Place(Epiglottal)), Consonant(Manner(Trill))],
+        ),
+        (
+            "ʢ",
+            &[
+                Consonant(Place(Epiglottal)),
+                Consonant(Manner(Trill)),
                 Consonant(Voiced),
             ],
         ),
@@ -944,13 +2581,224 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
         ("ʔ", &[Consonant(Place(Glottal)), Consonant(Manner(Stop))]),
         (
             "h",
-            &[Consonant(Place(Glottal)), Consonant(Manner(Fricative(Median, NonSibilant)))],
+            &[
+                Consonant(Place(Glottal)),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
+            ],
         ),
         (
             "ɦ",
             &[
                 Consonant(Place(Glottal)),
-                Consonant(Manner(Fricative(Median, NonSibilant))),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
+                Consonant(Voiced),
+            ],
+        ),
+        // clicks (bare symbols, default to velar rear articulation)
+        (
+            "ʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "𝼊",
+            &[
+                Consonant(Place(Retroflex)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        // alternate click transcriptions
+        (
+            "ʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        // click consonants with superscript prefix — velar accompaniment
+        (
+            "ᵏʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ᵍʘ",
+            &[
+                Consonant(Place(Bilabial)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ᵏǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ᵍǀ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ᵏǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ᵍǃ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ᵏǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ᵍǂ",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ᵏǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ᵍǁ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ᵏʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ᵍʇ",
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ᵏ𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ᵍ𝼋",
+            &[
+                Consonant(Place(Palatal)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ᵏʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ᵍʗ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Voiced),
+            ],
+        ),
+        (
+            "ᵏʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
+            ],
+        ),
+        (
+            "ᵍʖ",
+            &[
+                Consonant(Place(Alveolar)),
+                Consonant(Manner(Click(RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1215,26 +3063,86 @@ pub static POSTFIX_MODIFIERS: &[(&str, crate::Modifier)] = {
         ("̼", Linguolabial),
         ("̺", Apical),
         ("̻", Laminal),
-        ("̟", RelativeArticulation(crate::feature::RelativeArticulation::Advanced)),
-        ("̠", RelativeArticulation(crate::feature::RelativeArticulation::Retracted)),
-        ("˖", RelativeArticulation(crate::feature::RelativeArticulation::Advanced)),
-        ("˗", RelativeArticulation(crate::feature::RelativeArticulation::Retracted)),
-        ("̈", RelativeArticulation(crate::feature::RelativeArticulation::Centralized)),
-        ("̽", RelativeArticulation(crate::feature::RelativeArticulation::MidCentralized)),
-        ("̝", RelativeArticulation(crate::feature::RelativeArticulation::Raised)),
-        ("˔", RelativeArticulation(crate::feature::RelativeArticulation::Raised)),
-        ("̞", RelativeArticulation(crate::feature::RelativeArticulation::Lowered)),
-        ("˕", RelativeArticulation(crate::feature::RelativeArticulation::Lowered)),
-        ("̹", RelativeArticulation(crate::feature::RelativeArticulation::OverRounded)),
-        ("͗", RelativeArticulation(crate::feature::RelativeArticulation::OverRounded)),
-        ("̜", RelativeArticulation(crate::feature::RelativeArticulation::UnderRounded)),
-        ("͑", RelativeArticulation(crate::feature::RelativeArticulation::UnderRounded)),
-        ("ʷ", SecondaryArticulation(crate::feature::SecondaryArticulation::Labialized)),
-        ("ʲ", SecondaryArticulation(crate::feature::SecondaryArticulation::Palatalized)),
-        ("ˠ", SecondaryArticulation(crate::feature::SecondaryArticulation::Velarized)),
-        ("̴", SecondaryArticulation(crate::feature::SecondaryArticulation::Velarized)),
-        ("ˤ", SecondaryArticulation(crate::feature::SecondaryArticulation::Pharyngealized)),
-        ("𐞴", SecondaryArticulation(crate::feature::SecondaryArticulation::Epiglottalized)),
+        (
+            "̟",
+            RelativeArticulation(crate::feature::RelativeArticulation::Advanced),
+        ),
+        (
+            "̠",
+            RelativeArticulation(crate::feature::RelativeArticulation::Retracted),
+        ),
+        (
+            "˖",
+            RelativeArticulation(crate::feature::RelativeArticulation::Advanced),
+        ),
+        (
+            "˗",
+            RelativeArticulation(crate::feature::RelativeArticulation::Retracted),
+        ),
+        (
+            "̈",
+            RelativeArticulation(crate::feature::RelativeArticulation::Centralized),
+        ),
+        (
+            "̽",
+            RelativeArticulation(crate::feature::RelativeArticulation::MidCentralized),
+        ),
+        (
+            "̝",
+            RelativeArticulation(crate::feature::RelativeArticulation::Raised),
+        ),
+        (
+            "˔",
+            RelativeArticulation(crate::feature::RelativeArticulation::Raised),
+        ),
+        (
+            "̞",
+            RelativeArticulation(crate::feature::RelativeArticulation::Lowered),
+        ),
+        (
+            "˕",
+            RelativeArticulation(crate::feature::RelativeArticulation::Lowered),
+        ),
+        (
+            "̹",
+            RelativeArticulation(crate::feature::RelativeArticulation::OverRounded),
+        ),
+        (
+            "͗",
+            RelativeArticulation(crate::feature::RelativeArticulation::OverRounded),
+        ),
+        (
+            "̜",
+            RelativeArticulation(crate::feature::RelativeArticulation::UnderRounded),
+        ),
+        (
+            "͑",
+            RelativeArticulation(crate::feature::RelativeArticulation::UnderRounded),
+        ),
+        (
+            "ʷ",
+            SecondaryArticulation(crate::feature::SecondaryArticulation::Labialized),
+        ),
+        (
+            "ʲ",
+            SecondaryArticulation(crate::feature::SecondaryArticulation::Palatalized),
+        ),
+        (
+            "ˠ",
+            SecondaryArticulation(crate::feature::SecondaryArticulation::Velarized),
+        ),
+        (
+            "̴",
+            SecondaryArticulation(crate::feature::SecondaryArticulation::Velarized),
+        ),
+        (
+            "ˤ",
+            SecondaryArticulation(crate::feature::SecondaryArticulation::Pharyngealized),
+        ),
+        (
+            "𐞴",
+            SecondaryArticulation(crate::feature::SecondaryArticulation::Epiglottalized),
+        ),
         ("̘", TongueRoot(crate::feature::TongueRoot::Advanced)),
         ("̙", TongueRoot(crate::feature::TongueRoot::Retracted)),
         ("̃", Nasalized),
@@ -1256,6 +3164,8 @@ pub static POSTFIX_MODIFIERS: &[(&str, crate::Modifier)] = {
         ("᷈", Tone(crate::feature::Tone::RisingFalling)),
         ("ˑ", Length(crate::feature::Length::HalfLong)),
         ("̆", Length(crate::feature::Length::ExtraShort)),
+        ("ʼ", Ejective),
+        ("\u{2019}", Ejective), // U+2019 right single quotation mark, sometimes used for ejective
     ]
 };
 
@@ -1299,4 +3209,20 @@ pub static TONE_LETTERS: &[(&str, crate::Modifier)] = {
         ("²", crate::Modifier::Tone(crate::feature::Tone::Low)),
         ("¹", crate::Modifier::Tone(crate::feature::Tone::ExtraLow)),
     ]
+};
+
+pub static CLICKS: &[&str] = &["ʘ", "ǀ", "ǃ", "ǂ", "ǁ", "𝼊", "ʇ", "𝼋", "ʗ", "ʖ"];
+
+pub static IMPLIED_MODIFIERS: phf::Map<&str, &[crate::Modifier]> = {
+    use crate::Modifier::*;
+    phf::phf_map! {
+        "ɚ" | "ɝ" => &[Rhotacized],
+        "ɫ" => &[SecondaryArticulation(crate::feature::SecondaryArticulation::Velarized)],
+        "ŋ͡ʘ" | "ŋ͡ǀ" | "ŋ͡ǃ" | "ŋ͡ǂ" | "ŋ͡ǁ" |
+        "ɴ͡ʘ" | "ɴ͡ǀ" | "ɴ͡ǃ" | "ɴ͡ǂ" | "ɴ͡ǁ" |
+        "ŋ͜ʘ" | "ŋ͜ǀ" | "ŋ͜ǃ" | "ŋ͜ǂ" | "ŋ͜ǁ" |
+        "ɴ͜ʘ" | "ɴ͜ǀ" | "ɴ͜ǃ" | "ɴ͜ǂ" | "ɴ͜ǁ" |
+        "ŋʘ" | "ŋǀ" | "ŋǃ" | "ŋǂ" | "ŋǁ" |
+        "ɴʘ" | "ɴǀ" | "ɴǃ" | "ɴǂ" | "ɴǁ" => &[Nasalized]
+    }
 };
