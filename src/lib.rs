@@ -3,9 +3,15 @@
 //! which takes an IPA string and returns a `Phoneme` struct containing the features and modifiers of
 //! the phoneme, as well as any warnings that were generated during parsing.
 
-use std::collections::{HashSet, VecDeque};
+use std::{collections::{HashSet, VecDeque}, fmt::Display};
 use unicode_normalization::UnicodeNormalization;
 
+#[doc = include_str!("../README.md")]
+#[cfg(doctest)]
+pub struct ReadmeDoctests;
+
+// data is not stable between releases; here be dragons
+#[doc(hidden)]
 pub mod data;
 pub mod feature;
 use data::{PHONEMES, POLYPHTHONG_COMPONENTS, POSTFIX_MODIFIERS, PREFIX_MODIFIERS, TONE_LETTERS};
@@ -21,7 +27,7 @@ use crate::{
 ///
 /// Not all features and modifiers are guaranteed to be present, and some may be mutually exclusive.
 /// The parsed version of a phoneme is not guaranteed to be stable across different versions of this library.
-pub struct Phoneme<T: Into<String> + Clone> {
+pub struct Phoneme {
     /// Phonological features.
     features: HashSet<Feature>,
     /// Modifiers, usually diacritics. Does not include tone letters, which are stored separately.
@@ -38,24 +44,23 @@ pub struct Phoneme<T: Into<String> + Clone> {
     /// Whether this is a consonant or vowel.
     /// (If we couldn't find any features at all, this won't be known.)
     phoneme_class: Option<PhonemeClass>,
-    // todo: make borrowed?
     /// The original IPA representation of the phoneme.
-    representation: T,
+    representation: String,
 }
 
-impl<T: Into<String> + Clone> Phoneme<T> {
+impl Phoneme {
     /// Parses an IPA string into a `Phoneme` struct in a best-effort manner.
     /// Returns any warnings generated during parsing.
-    pub fn from(ipa: T) -> (Self, Vec<&'static str>) {
+    pub fn parse(ipa: impl Into<String>) -> (Self, Vec<&'static str>) {
         let mut features = HashSet::new();
         let mut modifiers = HashSet::new();
         let mut on_glides = Vec::new();
         let mut off_glides = Vec::new();
         let mut warnings = Vec::new();
-        let representation = ipa.clone();
+        let representation = ipa.into();
 
         // decompose the string as much as possible
-        let mut ipa: &str = &ipa.into().nfd().collect::<String>();
+        let mut ipa: &str = &representation.clone().nfd().collect::<String>();
 
         // let's pray that the compiler is smart enough to make this a `goto`
         let mut found_phoneme = false;
@@ -193,17 +198,17 @@ impl<T: Into<String> + Clone> Phoneme<T> {
     /// Get the original IPA representation of this phoneme.
     ///
     /// This is _always_ the same as the input to `Phoneme::from`.
-    pub fn representation(&self) -> &T {
+    pub fn representation(&self) -> &str {
         &self.representation
     }
 
     /// Get the on-glides of this phoneme, if it is a polyphthong.
-    pub fn on_glides(&self) -> &Vec<&'static [Feature]> {
+    pub fn on_glides(&self) -> &[&'static [Feature]] {
         &self.on_glides
     }
 
     /// Get the off-glides of this phoneme, if it is a polyphthong.
-    pub fn off_glides(&self) -> &Vec<&'static [Feature]> {
+    pub fn off_glides(&self) -> &[&'static [Feature]] {
         &self.off_glides
     }
 
@@ -215,7 +220,7 @@ impl<T: Into<String> + Clone> Phoneme<T> {
     /// or the notation may be based on chinese tone marking, in which e.g. "3" means a falling-rising tone. This will instead be parsed
     /// as Mid.
     // (which is sad, because that's the best tone...)
-    pub fn tone_letters(&self) -> &Vec<Tone> {
+    pub fn tone_letters(&self) -> &[Tone] {
         &self.tone_letters
     }
 
@@ -275,6 +280,39 @@ impl<T: Into<String> + Clone> Phoneme<T> {
     }
 }
 
+impl Display for Phoneme {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.name())
+    }
+}
+
+impl From<&str> for Phoneme {
+    fn from(value: &str) -> Self {
+        Self::parse(value).0
+    }
+}
+
+impl From<String> for Phoneme {
+    fn from(value: String) -> Self {
+        Self::parse(value).0
+    }
+}
+
+#[cfg(feature = "serde")]
+impl serde::Serialize for Phoneme {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        serializer.serialize_str(&self.representation)
+    }
+}
+
+#[cfg(feature = "serde")]
+impl<'de> serde::Deserialize<'de> for Phoneme {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        let s = String::deserialize(deserializer)?;
+        Ok(Self::parse(s).0)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::feature::Tone;
@@ -283,7 +321,7 @@ mod tests {
 
     #[test]
     fn parsing_phoneme() {
-        let (phoneme, warnings) = Phoneme::from("tʰ");
+        let (phoneme, warnings) = Phoneme::parse("tʰ");
         assert!(warnings.is_empty());
         assert!(
             phoneme
@@ -298,12 +336,12 @@ mod tests {
                 )))
         );
         assert!(phoneme.modifiers().contains(&Modifier::Aspirated));
-        assert_eq!(*(phoneme.representation()), "tʰ");
+        assert_eq!(phoneme.representation(), "tʰ");
     }
 
     #[test]
     fn parsing_polyphthong() {
-        let (phoneme, warnings) = Phoneme::from("aɪ̯");
+        let (phoneme, warnings) = Phoneme::parse("aɪ̯");
         assert!(warnings.is_empty());
         assert!(
             phoneme
@@ -323,12 +361,12 @@ mod tests {
                 Feature::Vowel(VowelFeature::Depth(Depth::NearFront))
             ]]
         );
-        assert_eq!(*(phoneme.representation()), "aɪ̯");
+        assert_eq!(phoneme.representation(), "aɪ̯");
     }
 
     #[test]
     fn parsing_tone_letters() {
-        let (phoneme, warnings) = Phoneme::from("a˧˥");
+        let (phoneme, warnings) = Phoneme::parse("a˧˥");
         assert!(warnings.is_empty());
         assert!(
             phoneme
@@ -346,12 +384,12 @@ mod tests {
                 .tone_letters()
                 .contains(&Tone::ExtraHigh)
         );
-        assert_eq!(*(phoneme.representation()), "a˧˥");
+        assert_eq!(phoneme.representation(), "a˧˥");
     }
 
     #[test]
     fn parsing_prenasalized_double_articulation() {
-        let (phoneme, warnings) = Phoneme::from("ŋ͡mg͡b");
+        let (phoneme, warnings) = Phoneme::parse("ŋ͡mg͡b");
         assert!(warnings.is_empty());
         assert!(phoneme.modifiers().contains(&Modifier::PreNasalized));
         assert!(phoneme.features().contains(&Feature::Consonant(ConsonantFeature::DoubleArticulation(Place::Bilabial, Place::Velar))));
@@ -360,42 +398,42 @@ mod tests {
 
     #[test]
     fn name_simple() {
-        let (phoneme, warnings) = Phoneme::from("t");
+        let (phoneme, warnings) = Phoneme::parse("t");
         assert!(warnings.is_empty());
         assert_eq!(phoneme.name(), "voiceless alveolar stop");
     }
 
     #[test]
     fn name_with_modifiers() {
-        let (phoneme, warnings) = Phoneme::from("tʰ");
+        let (phoneme, warnings) = Phoneme::parse("tʰ");
         assert!(warnings.is_empty());
         assert_eq!(phoneme.name(), "aspirated voiceless alveolar stop");
     }
 
     #[test]
     fn name_with_suffix() {
-        let (phoneme, warnings) = Phoneme::from("á");
+        let (phoneme, warnings) = Phoneme::parse("á");
         assert!(warnings.is_empty());
         assert_eq!(phoneme.name(), "open front vowel with high tone");
     }
 
     #[test]
     fn name_voiceless() {
-        let (phoneme, warnings) = Phoneme::from("d̥");
+        let (phoneme, warnings) = Phoneme::parse("d̥");
         assert!(warnings.is_empty());
         assert_eq!(phoneme.name(), "voiceless alveolar stop");
     }
 
     #[test]
     fn name_tone_letters() {
-        let (phoneme, warnings) = Phoneme::from("a˧˥");
+        let (phoneme, warnings) = Phoneme::parse("a˧˥");
         assert!(warnings.is_empty());
         assert_eq!(phoneme.name(), "open front vowel with tone pattern 35");
     }
 
     #[test]
     fn name_prenasalized_double_articulation() {
-        let (phoneme, warnings) = Phoneme::from("ŋ͡mg͡b");
+        let (phoneme, warnings) = Phoneme::parse("ŋ͡mg͡b");
         assert!(warnings.is_empty());
         assert_eq!(phoneme.name(), "pre-nasalized voiced labial-velar stop");
     }
