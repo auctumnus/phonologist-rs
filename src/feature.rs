@@ -14,6 +14,7 @@ macro_rules! display_for_static_str {
 }
 
 /// The place of articulation of a consonant.
+/// 
 /// See <https://en.wikipedia.org/wiki/Place_of_articulation>.
 #[derive(
     Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr,
@@ -48,6 +49,30 @@ pub enum Place {
     Epiglottal,
     /// See <https://en.wikipedia.org/wiki/Glottal_consonant>.
     Glottal,
+}
+
+/// The category of a place of articulation.
+#[derive(
+    Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr,
+)]
+#[strum(serialize_all = "lowercase")]
+pub enum PlaceCategory {
+    Labial,
+    Coronal,
+    Dorsal,
+    Laryngeal,
+}
+
+impl Place {
+    pub fn category(&self) -> PlaceCategory {
+        use Place::*;
+        match self {
+            Bilabial | Labiodental | Linguolabial => PlaceCategory::Labial,
+            Dental | Alveolar | PostAlveolar | Alveolopalatal | Retroflex => PlaceCategory::Coronal,
+            Palatal | Velar | Uvular => PlaceCategory::Dorsal,
+            Pharyngeal | Epiglottal | Glottal => PlaceCategory::Laryngeal,
+        }
+    }
 }
 
 /// Whether a consonant is lateral or not.
@@ -165,7 +190,35 @@ impl<'a> From<&'a Manner> for &'static str {
 
 display_for_static_str!(Manner);
 
+/// The category of a manner of articulation.
+#[derive(
+    Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr,
+)]
+pub enum MannerCategory {
+    Obstruent,
+    Sonorant,
+}
+
+impl Manner {
+    pub fn category(&self) -> MannerCategory {
+        use Manner::*;
+        match self {
+            Stop | Affricate(_) | Fricative(_) | Click(_) => MannerCategory::Obstruent,
+            Nasal | Trill | Flap(_) | Implosive | Approximant(_) => MannerCategory::Sonorant,
+        }
+    }
+
+    pub fn is_obstruent(&self) -> bool {
+        self.category() == MannerCategory::Obstruent
+    }
+
+    pub fn is_sonorant(&self) -> bool {
+        self.category() == MannerCategory::Sonorant
+    }
+}
+
 /// The height, or openness, of a vowel.
+/// 
 /// See <https://en.wikipedia.org/wiki/Vowel#Height>.
 #[derive(
     Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr,
@@ -184,6 +237,7 @@ pub enum Height {
 display_for_static_str!(Height);
 
 /// The depth of a vowel.
+/// 
 /// See <https://en.wikipedia.org/wiki/Vowel#Backness>.
 #[derive(
     Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr,
@@ -399,6 +453,7 @@ pub enum SecondaryArticulation {
 display_for_static_str!(SecondaryArticulation);
 
 /// See <https://en.wikipedia.org/wiki/Vowel_length>.
+/// 
 /// Length::Long also marks geminate consonants; see <https://en.wikipedia.org/wiki/Gemination>.
 #[derive(
     Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr,

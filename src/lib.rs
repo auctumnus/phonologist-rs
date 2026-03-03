@@ -1,7 +1,28 @@
 //! A library for parsing IPA phonemes into their features and modifiers.
-//! This is a work in progress, and the API is not yet stable. The main function is `Phoneme::from`,
-//! which takes an IPA string and returns a `Phoneme` struct containing the features and modifiers of
+//! The main function is `Phoneme::parse`, which takes an IPA string and
+//! returns a `Phoneme` struct containing the features and modifiers of
 //! the phoneme, as well as any warnings that were generated during parsing.
+//! 
+//! Note that the parsing is a best-effort attempt, and may not be perfect.
+//! Phonological notation is a method of communication, not a formal system,
+//! and so care must be taken with the results of parsing.
+//! 
+//! `PartialOrd` and `Ord` are implemented primarily for the purpose of sorting
+//! features for generating names via `Phoneme::name`; however, the order also
+//! should line up with the IPA charts generally.
+//! 
+//! ## Examples
+//! ```
+//! use phonologist::{Phoneme, feature::{Feature, ConsonantFeature, Manner}};
+//! let (phoneme, warnings) = Phoneme::parse("t");
+//! assert!(warnings.is_empty());
+//! assert_eq!(phoneme.name(), "voiceless alveolar stop");
+//! assert!(
+//!     phoneme
+//!         .features()
+//!         .contains(&Feature::Consonant(ConsonantFeature::Manner(Manner::Stop)))
+//! );
+//! ``````
 
 use std::{collections::{HashSet, VecDeque}, fmt::Display};
 use unicode_normalization::UnicodeNormalization;

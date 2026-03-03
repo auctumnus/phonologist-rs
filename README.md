@@ -1,6 +1,13 @@
 # phonologist
 
-Allows you to parse phonemes in the International Phonetic Alphabet.
+A library for parsing IPA phonemes into their features and modifiers.
+The main function is `Phoneme::parse`, which takes an IPA string and
+returns a `Phoneme` struct containing the features and modifiers of
+the phoneme, as well as any warnings that were generated during parsing.
+
+Note that the parsing is a best-effort attempt, and may not be perfect.
+Phonological notation is a method of communication, not a formal system,
+and so care must be taken with the results of parsing.
 
 ## Usage
 
