@@ -3,7 +3,7 @@
 //! which takes an IPA string and returns a `Phoneme` struct containing the features and modifiers of
 //! the phoneme, as well as any warnings that were generated during parsing.
 
-use std::{borrow::Cow, collections::{HashSet, VecDeque}};
+use std::collections::{HashSet, VecDeque};
 use unicode_normalization::UnicodeNormalization;
 
 pub mod data;
@@ -11,7 +11,10 @@ pub mod feature;
 use data::{PHONEMES, POLYPHTHONG_COMPONENTS, POSTFIX_MODIFIERS, PREFIX_MODIFIERS, TONE_LETTERS};
 use feature::{ConsonantFeature, Depth, Feature, Height, Manner, Modifier, Place, VowelFeature};
 
-use crate::{data::{CLICKS, IMPLIED_MODIFIERS}, feature::PhonemeClass};
+use crate::{
+    data::{CLICKS, IMPLIED_MODIFIERS, PRENASALIZED_STOP_CONFUSABLE, PRENASALIZED_STOPS},
+    feature::{PhonemeClass, Tone},
+};
 
 #[derive(Clone, Debug)]
 /// A struct representing a phoneme.
@@ -31,7 +34,7 @@ pub struct Phoneme<T: Into<String> + Clone> {
     off_glides: Vec<&'static [Feature]>,
     /// Tone letters will be stored here, in the order they appear in the IPA string.
     /// This does not include all possible tone modifiers - just the set ˩ ˨ ˧ ˦ ˥.
-    tone_letters: Vec<Modifier>,
+    tone_letters: Vec<Tone>,
     /// Whether this is a consonant or vowel.
     /// (If we couldn't find any features at all, this won't be known.)
     phoneme_class: Option<PhonemeClass>,
@@ -54,6 +57,9 @@ impl<T: Into<String> + Clone> Phoneme<T> {
         // decompose the string as much as possible
         let mut ipa: &str = &ipa.into().nfd().collect::<String>();
 
+        // let's pray that the compiler is smart enough to make this a `goto`
+        let mut found_phoneme = false;
+
         // strip prefix modifiers
         'prefix_loop: loop {
             for (prefix, modifier) in PREFIX_MODIFIERS {
@@ -63,6 +69,17 @@ impl<T: Into<String> + Clone> Phoneme<T> {
                     {
                         break 'prefix_loop;
                     }
+                    if PRENASALIZED_STOP_CONFUSABLE.contains(prefix) {
+                        for (prenasalized_stop, f) in PRENASALIZED_STOPS {
+                            if let Some(r) = ipa.strip_prefix(prenasalized_stop) {
+                                features.extend(*f);
+                                modifiers.insert(Modifier::PreNasalized);
+                                ipa = r;
+                                found_phoneme = true;
+                                break 'prefix_loop;
+                            }
+                        }
+                    }
                     modifiers.insert(*modifier);
                     ipa = rest;
                     continue 'prefix_loop;
@@ -71,27 +88,29 @@ impl<T: Into<String> + Clone> Phoneme<T> {
             break;
         }
 
-        // strip on-glides
-        'onglide_loop: loop {
-            for (onglide, features) in POLYPHTHONG_COMPONENTS {
-                if let Some(rest) = ipa.strip_prefix(onglide) {
-                    on_glides.push(*features);
-                    ipa = rest;
-                    continue 'onglide_loop;
-                }
-            }
-            break;
-        }
-
-        // find base phoneme
-        for (phoneme, f) in PHONEMES {
-            if let Some(rest) = ipa.strip_prefix(phoneme) {
-                features.extend(f.iter().copied());
-                ipa = rest;
-                if let Some(m) = IMPLIED_MODIFIERS.get(phoneme) {
-                    modifiers.extend(m.iter());
+        if !found_phoneme {
+            // strip on-glides
+            'onglide_loop: loop {
+                for (onglide, features) in POLYPHTHONG_COMPONENTS {
+                    if let Some(rest) = ipa.strip_prefix(onglide) {
+                        on_glides.push(*features);
+                        ipa = rest;
+                        continue 'onglide_loop;
+                    }
                 }
                 break;
+            }
+
+            // find base phoneme
+            for (phoneme, f) in PHONEMES {
+                if let Some(rest) = ipa.strip_prefix(phoneme) {
+                    features.extend(f.iter().copied());
+                    ipa = rest;
+                    if let Some(m) = IMPLIED_MODIFIERS.get(phoneme) {
+                        modifiers.extend(m.iter());
+                    }
+                    break;
+                }
             }
         }
 
@@ -155,7 +174,7 @@ impl<T: Into<String> + Clone> Phoneme<T> {
             off_glides,
             representation,
             tone_letters,
-            phoneme_class
+            phoneme_class,
         };
 
         (phoneme, warnings)
@@ -196,7 +215,7 @@ impl<T: Into<String> + Clone> Phoneme<T> {
     /// or the notation may be based on chinese tone marking, in which e.g. "3" means a falling-rising tone. This will instead be parsed
     /// as Mid.
     // (which is sad, because that's the best tone...)
-    pub fn tone_letters(&self) -> &Vec<Modifier> {
+    pub fn tone_letters(&self) -> &Vec<Tone> {
         &self.tone_letters
     }
 
@@ -215,20 +234,44 @@ impl<T: Into<String> + Clone> Phoneme<T> {
     pub fn name(&self) -> String {
         let expected_parts = self.features.len() + self.modifiers.len() + 1;
         let mut parts = VecDeque::with_capacity(expected_parts);
-        let mut features: Vec<_> = self.features.iter().copied().collect();
+
+        let has_voicing_modifier = self.modifiers.iter().any(|m| matches!(m, Modifier::Voice(_)));
+
+        let mut features: Vec<_> = if has_voicing_modifier {
+            self.features
+                .iter()
+                .copied()
+                .filter(|f| !matches!(f, Feature::Consonant(ConsonantFeature::Voiced)))
+                .collect()
+        } else {
+            self.features.iter().copied().collect()
+        };
         features.sort();
         for feature in features {
             parts.push_back(feature.into());
         }
-        for modifier in &self.modifiers {
-            modifier.apply_modifier(&mut parts);
+
+        if !has_voicing_modifier && self.is_consonant() && !self.features.iter().any(|f| matches!(f, Feature::Consonant(ConsonantFeature::Voiced))) {
+            parts.push_front("voiceless");
         }
 
         if self.phoneme_class == Some(PhonemeClass::Vowel) {
             parts.push_back("vowel")
         }
-        
-        parts.make_contiguous().join(" ")
+
+        for modifier in &self.modifiers {
+            modifier.apply_modifier(&mut parts);
+        }
+        let mut name = parts.make_contiguous().join(" ");
+
+        if !self.tone_letters.is_empty() {
+            name.push_str(" with tone pattern ");
+            for tone_letter in &self.tone_letters {
+                name.push_str(tone_letter.as_number_str());
+            }
+        }
+
+        name
     }
 }
 
@@ -297,19 +340,63 @@ mod tests {
                 .features()
                 .contains(&Feature::Vowel(VowelFeature::Depth(Depth::Front)))
         );
-        assert!(phoneme.tone_letters().contains(&Modifier::Tone(Tone::Mid)));
+        assert!(phoneme.tone_letters().contains(&Tone::Mid));
         assert!(
             phoneme
                 .tone_letters()
-                .contains(&Modifier::Tone(Tone::ExtraHigh))
+                .contains(&Tone::ExtraHigh)
         );
         assert_eq!(*(phoneme.representation()), "a˧˥");
+    }
+
+    #[test]
+    fn parsing_prenasalized_double_articulation() {
+        let (phoneme, warnings) = Phoneme::from("ŋ͡mg͡b");
+        assert!(warnings.is_empty());
+        assert!(phoneme.modifiers().contains(&Modifier::PreNasalized));
+        assert!(phoneme.features().contains(&Feature::Consonant(ConsonantFeature::DoubleArticulation(Place::Bilabial, Place::Velar))));
+        assert!(phoneme.features().contains(&Feature::Consonant(ConsonantFeature::Manner(Manner::Stop))));
     }
 
     #[test]
     fn name_simple() {
         let (phoneme, warnings) = Phoneme::from("t");
         assert!(warnings.is_empty());
-        assert_eq!(phoneme.name(), "alveolar stop");
+        assert_eq!(phoneme.name(), "voiceless alveolar stop");
+    }
+
+    #[test]
+    fn name_with_modifiers() {
+        let (phoneme, warnings) = Phoneme::from("tʰ");
+        assert!(warnings.is_empty());
+        assert_eq!(phoneme.name(), "aspirated voiceless alveolar stop");
+    }
+
+    #[test]
+    fn name_with_suffix() {
+        let (phoneme, warnings) = Phoneme::from("á");
+        assert!(warnings.is_empty());
+        assert_eq!(phoneme.name(), "open front vowel with high tone");
+    }
+
+    #[test]
+    fn name_voiceless() {
+        let (phoneme, warnings) = Phoneme::from("d̥");
+        assert!(warnings.is_empty());
+        assert_eq!(phoneme.name(), "voiceless alveolar stop");
+    }
+
+    #[test]
+    fn name_tone_letters() {
+        let (phoneme, warnings) = Phoneme::from("a˧˥");
+        assert!(warnings.is_empty());
+        assert_eq!(phoneme.name(), "open front vowel with tone pattern 35");
+    }
+
+    #[test]
+    fn name_prenasalized_double_articulation() {
+        let (phoneme, warnings) = Phoneme::from("ŋ͡mg͡b");
+        assert!(warnings.is_empty());
+        assert_eq!(phoneme.name(), "pre-nasalized voiced labial-velar stop");
     }
 }
