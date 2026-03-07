@@ -2,15 +2,15 @@
 //! The main function is `Phoneme::parse`, which takes an IPA string and
 //! returns a `Phoneme` struct containing the features and modifiers of
 //! the phoneme, as well as any warnings that were generated during parsing.
-//! 
+//!
 //! Note that the parsing is a best-effort attempt, and may not be perfect.
 //! Phonological notation is a method of communication, not a formal system,
 //! and so care must be taken with the results of parsing.
-//! 
+//!
 //! `PartialOrd` and `Ord` are implemented primarily for the purpose of sorting
 //! features for generating names via `Phoneme::name`; however, the order also
 //! should line up with the IPA charts generally.
-//! 
+//!
 //! ## Examples
 //! ```
 //! use phonologist::{Phoneme, feature::{Feature, ConsonantFeature, Manner}};
@@ -24,7 +24,10 @@
 //! );
 //! ``````
 
-use std::{collections::{HashSet, VecDeque}, fmt::Display};
+use std::{
+    collections::{HashSet, VecDeque},
+    fmt::Display,
+};
 use unicode_normalization::UnicodeNormalization;
 
 #[doc = include_str!("../README.md")]
@@ -35,11 +38,12 @@ pub struct ReadmeDoctests;
 #[doc(hidden)]
 pub mod data;
 pub mod feature;
+pub mod table;
 use data::{PHONEMES, POLYPHTHONG_COMPONENTS, POSTFIX_MODIFIERS, PREFIX_MODIFIERS, TONE_LETTERS};
 use feature::{ConsonantFeature, Depth, Feature, Height, Manner, Modifier, Place, VowelFeature};
 
 use crate::{
-    data::{CLICKS, IMPLIED_MODIFIERS, PRENASALIZED_STOP_CONFUSABLE, PRENASALIZED_STOPS},
+    data::{CLICKS, IMPLIED_MODIFIERS, PRENASALIZED_STOPS, PRENASALIZED_STOP_CONFUSABLE},
     feature::{PhonemeClass, Tone},
 };
 
@@ -257,11 +261,66 @@ impl Phoneme {
         self.phoneme_class == Some(PhonemeClass::Vowel)
     }
 
+    /// Get the place of articulation of this phoneme, if it is a consonant with a single place.
+    pub fn place(&self) -> Option<Place> {
+        self.features.iter().find_map(|f| match f {
+            Feature::Consonant(ConsonantFeature::Place(p)) => Some(*p),
+            _ => None,
+        })
+    }
+
+    /// Get the double articulation places, if this is a doubly-articulated consonant.
+    pub fn double_articulation(&self) -> Option<(Place, Place)> {
+        self.features.iter().find_map(|f| match f {
+            Feature::Consonant(ConsonantFeature::DoubleArticulation(p1, p2)) => Some((*p1, *p2)),
+            _ => None,
+        })
+    }
+
+    /// Get the manner of articulation of this phoneme, if it is a consonant.
+    pub fn manner(&self) -> Option<Manner> {
+        self.features.iter().find_map(|f| match f {
+            Feature::Consonant(ConsonantFeature::Manner(m)) => Some(*m),
+            _ => None,
+        })
+    }
+
+    /// Get the height of this phoneme, if it is a vowel.
+    pub fn height(&self) -> Option<Height> {
+        self.features.iter().find_map(|f| match f {
+            Feature::Vowel(VowelFeature::Height(h)) => Some(*h),
+            _ => None,
+        })
+    }
+
+    /// Get the depth (backness) of this phoneme, if it is a vowel.
+    pub fn depth(&self) -> Option<Depth> {
+        self.features.iter().find_map(|f| match f {
+            Feature::Vowel(VowelFeature::Depth(d)) => Some(*d),
+            _ => None,
+        })
+    }
+
+    /// Whether this vowel has the Rounded feature.
+    pub fn is_rounded(&self) -> bool {
+        self.features
+            .contains(&Feature::Vowel(VowelFeature::Rounded))
+    }
+
+    /// Whether this consonant has the Voiced feature.
+    pub fn is_voiced(&self) -> bool {
+        self.features
+            .contains(&Feature::Consonant(ConsonantFeature::Voiced))
+    }
+
     pub fn name(&self) -> String {
         let expected_parts = self.features.len() + self.modifiers.len() + 1;
         let mut parts = VecDeque::with_capacity(expected_parts);
 
-        let has_voicing_modifier = self.modifiers.iter().any(|m| matches!(m, Modifier::Voice(_)));
+        let has_voicing_modifier = self
+            .modifiers
+            .iter()
+            .any(|m| matches!(m, Modifier::Voice(_)));
 
         let mut features: Vec<_> = if has_voicing_modifier {
             self.features
@@ -277,7 +336,13 @@ impl Phoneme {
             parts.push_back(feature.into());
         }
 
-        if !has_voicing_modifier && self.is_consonant() && !self.features.iter().any(|f| matches!(f, Feature::Consonant(ConsonantFeature::Voiced))) {
+        if !has_voicing_modifier
+            && self.is_consonant()
+            && !self
+                .features
+                .iter()
+                .any(|f| matches!(f, Feature::Consonant(ConsonantFeature::Voiced)))
+        {
             parts.push_front("voiceless");
         }
 
@@ -298,6 +363,10 @@ impl Phoneme {
         }
 
         name
+    }
+
+    pub fn has_feature(&self, feature: &Feature) -> bool {
+        self.features.contains(feature)
     }
 }
 
@@ -344,18 +413,14 @@ mod tests {
     fn parsing_phoneme() {
         let (phoneme, warnings) = Phoneme::parse("tʰ");
         assert!(warnings.is_empty());
-        assert!(
-            phoneme
-                .features()
-                .contains(&Feature::Consonant(ConsonantFeature::Manner(Manner::Stop)))
-        );
-        assert!(
-            phoneme
-                .features()
-                .contains(&Feature::Consonant(ConsonantFeature::Place(
-                    Place::Alveolar
-                )))
-        );
+        assert!(phoneme
+            .features()
+            .contains(&Feature::Consonant(ConsonantFeature::Manner(Manner::Stop))));
+        assert!(phoneme
+            .features()
+            .contains(&Feature::Consonant(ConsonantFeature::Place(
+                Place::Alveolar
+            ))));
         assert!(phoneme.modifiers().contains(&Modifier::Aspirated));
         assert_eq!(phoneme.representation(), "tʰ");
     }
@@ -364,16 +429,12 @@ mod tests {
     fn parsing_polyphthong() {
         let (phoneme, warnings) = Phoneme::parse("aɪ̯");
         assert!(warnings.is_empty());
-        assert!(
-            phoneme
-                .features()
-                .contains(&Feature::Vowel(VowelFeature::Height(Height::Open)))
-        );
-        assert!(
-            phoneme
-                .features()
-                .contains(&Feature::Vowel(VowelFeature::Depth(Depth::Front)))
-        );
+        assert!(phoneme
+            .features()
+            .contains(&Feature::Vowel(VowelFeature::Height(Height::Open))));
+        assert!(phoneme
+            .features()
+            .contains(&Feature::Vowel(VowelFeature::Depth(Depth::Front))));
         assert!(phoneme.on_glides().is_empty());
         assert_eq!(
             phoneme.off_glides(),
@@ -389,22 +450,14 @@ mod tests {
     fn parsing_tone_letters() {
         let (phoneme, warnings) = Phoneme::parse("a˧˥");
         assert!(warnings.is_empty());
-        assert!(
-            phoneme
-                .features()
-                .contains(&Feature::Vowel(VowelFeature::Height(Height::Open)))
-        );
-        assert!(
-            phoneme
-                .features()
-                .contains(&Feature::Vowel(VowelFeature::Depth(Depth::Front)))
-        );
+        assert!(phoneme
+            .features()
+            .contains(&Feature::Vowel(VowelFeature::Height(Height::Open))));
+        assert!(phoneme
+            .features()
+            .contains(&Feature::Vowel(VowelFeature::Depth(Depth::Front))));
         assert!(phoneme.tone_letters().contains(&Tone::Mid));
-        assert!(
-            phoneme
-                .tone_letters()
-                .contains(&Tone::ExtraHigh)
-        );
+        assert!(phoneme.tone_letters().contains(&Tone::ExtraHigh));
         assert_eq!(phoneme.representation(), "a˧˥");
     }
 
@@ -413,8 +466,12 @@ mod tests {
         let (phoneme, warnings) = Phoneme::parse("ŋ͡mg͡b");
         assert!(warnings.is_empty());
         assert!(phoneme.modifiers().contains(&Modifier::PreNasalized));
-        assert!(phoneme.features().contains(&Feature::Consonant(ConsonantFeature::DoubleArticulation(Place::Bilabial, Place::Velar))));
-        assert!(phoneme.features().contains(&Feature::Consonant(ConsonantFeature::Manner(Manner::Stop))));
+        assert!(phoneme.features().contains(&Feature::Consonant(
+            ConsonantFeature::DoubleArticulation(Place::Bilabial, Place::Velar)
+        )));
+        assert!(phoneme
+            .features()
+            .contains(&Feature::Consonant(ConsonantFeature::Manner(Manner::Stop))));
     }
 
     #[test]

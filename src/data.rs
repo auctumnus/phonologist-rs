@@ -4,6 +4,10 @@
 
 /// All phonemes with their features. This list is not guaranteed to be stable across versions.
 pub static PHONEMES: &[(&str, &[crate::Feature])] = {
+    use crate::feature::Airstream::*;
+    use crate::feature::FricativeKind::*;
+    use crate::feature::RearArticulation;
+    use crate::feature::Airstream;
     use crate::ConsonantFeature::*;
     use crate::Depth::*;
     use crate::Feature::*;
@@ -11,9 +15,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
     use crate::Manner::*;
     use crate::Place::*;
     use crate::VowelFeature::*;
-    use crate::feature::Airstream::*;
-    use crate::feature::FricativeKind::*;
-    use crate::feature::RearArticulation;
+    
 
     // must be ordered longest to shortest, otherwise the longest match will be missed
     &[
@@ -413,14 +415,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͡ʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͡ʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -428,7 +430,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͡ʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -436,14 +438,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͡ǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͡ǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -451,7 +453,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͡ǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -459,14 +461,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͡ǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͡ǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -474,7 +476,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͡ǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -482,14 +484,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͡ǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͡ǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -497,7 +499,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͡ǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -505,14 +507,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͡ǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͡ǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -520,7 +522,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͡ǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -529,14 +531,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͡ʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͡ʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -544,7 +546,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͡ʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -552,14 +554,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͡𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͡𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -567,7 +569,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͡𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -575,14 +577,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͡ʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͡ʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -590,7 +592,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͡ʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -598,14 +600,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͡ʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͡ʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -613,7 +615,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͡ʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -622,14 +624,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͡ʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͡ʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -637,7 +639,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͡ʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -645,14 +647,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͡ǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͡ǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -660,7 +662,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͡ǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -668,14 +670,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͡ǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͡ǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -683,7 +685,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͡ǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -691,14 +693,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͡ǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͡ǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -706,7 +708,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͡ǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -714,14 +716,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͡ǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͡ǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -729,7 +731,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͡ǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -738,14 +740,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͡ʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͡ʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -753,7 +755,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͡ʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -761,14 +763,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͡𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͡𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -776,7 +778,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͡𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -784,14 +786,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͡ʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͡ʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -799,7 +801,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͡ʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -807,14 +809,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͡ʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͡ʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -822,7 +824,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͡ʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1068,14 +1070,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͜ʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͜ʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1083,7 +1085,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͜ʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1091,14 +1093,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͜ǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͜ǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1106,7 +1108,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͜ǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1114,14 +1116,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͜ǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͜ǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1129,7 +1131,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͜ǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1137,14 +1139,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͜ǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͜ǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1152,7 +1154,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͜ǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1160,14 +1162,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͜ǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͜ǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1175,7 +1177,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͜ǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1184,14 +1186,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͜ʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͜ʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1199,7 +1201,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͜ʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1207,14 +1209,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͜𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͜𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1222,7 +1224,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͜𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1230,14 +1232,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͜ʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͜ʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1245,7 +1247,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͜ʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1253,14 +1255,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k͜ʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ͜ʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1268,7 +1270,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ͜ʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1277,14 +1279,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͜ʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͜ʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1292,7 +1294,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͜ʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1300,14 +1302,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͜ǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͜ǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1315,7 +1317,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͜ǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1323,14 +1325,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͜ǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͜ǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1338,7 +1340,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͜ǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1346,14 +1348,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͜ǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͜ǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1361,7 +1363,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͜ǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1369,14 +1371,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͜ǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͜ǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1384,7 +1386,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͜ǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1393,14 +1395,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͜ʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͜ʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1408,7 +1410,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͜ʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1416,14 +1418,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͜𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͜𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1431,7 +1433,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͜𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1439,14 +1441,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͜ʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͜ʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1454,7 +1456,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͜ʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1462,14 +1464,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q͜ʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ͜ʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1477,7 +1479,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ͜ʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -1915,14 +1917,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "kʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1930,7 +1932,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1938,14 +1940,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "kǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1953,7 +1955,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1961,14 +1963,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "kǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1976,7 +1978,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1984,14 +1986,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "kǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -1999,7 +2001,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -2007,14 +2009,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "kǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -2022,7 +2024,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -2031,14 +2033,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "qʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2046,7 +2048,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2054,14 +2056,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "qǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2069,7 +2071,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2077,14 +2079,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "qǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2092,7 +2094,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2100,14 +2102,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "qǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2115,7 +2117,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2123,14 +2125,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "qǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2138,7 +2140,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2147,14 +2149,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "kʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -2162,7 +2164,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -2170,14 +2172,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "k𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡ𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -2185,7 +2187,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋ𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -2193,14 +2195,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "kʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -2208,7 +2210,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -2216,14 +2218,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "kʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ɡʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -2231,7 +2233,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ŋʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -2240,14 +2242,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "qʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2255,7 +2257,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2263,14 +2265,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "q𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢ𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2278,7 +2280,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴ𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2286,14 +2288,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "qʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2301,7 +2303,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2309,14 +2311,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "qʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
             ],
         ),
         (
             "ɢʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2324,7 +2326,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ɴʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Uvular))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Uvular))),
                 Consonant(Voiced),
             ],
         ),
@@ -2426,10 +2428,7 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             ],
         ),
         // dental
-        (
-            "t̪",
-            &[Consonant(Place(Dental)), Consonant(Manner(Stop))],
-        ),
+        ("t̪", &[Consonant(Place(Dental)), Consonant(Manner(Stop))]),
         (
             "d̪",
             &[
@@ -2455,7 +2454,10 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
         ),
         (
             "s̪",
-            &[Consonant(Place(Dental)), Consonant(Manner(Fricative(Sibilant)))],
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Fricative(Sibilant))),
+            ],
         ),
         (
             "z̪",
@@ -2467,20 +2469,35 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
         ),
         (
             "ð̞",
-            &[Consonant(Place(Dental)), Consonant(Manner(Approximant(Median)))],
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Approximant(Median))),
+            ],
         ),
         (
             "l̪",
-            &[Consonant(Place(Dental)), Consonant(Manner(Approximant(Lateral))), Consonant(Voiced)],
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Approximant(Lateral))),
+                Consonant(Voiced),
+            ],
         ),
         (
             "ɗ̪",
-            &[Consonant(Place(Dental)), Consonant(Manner(Implosive)), Consonant(Voiced)],
+            &[
+                Consonant(Place(Dental)),
+                Consonant(Manner(Implosive)),
+                Consonant(Voiced),
+            ],
         ),
         // linguolabial, coronal notation
         (
             "n̼",
-            &[Consonant(Place(Linguolabial)), Consonant(Manner(Nasal)), Consonant(Voiced)],
+            &[
+                Consonant(Place(Linguolabial)),
+                Consonant(Manner(Nasal)),
+                Consonant(Voiced),
+            ],
         ),
         (
             "t̼",
@@ -2511,7 +2528,10 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
         ),
         (
             "θ̼",
-            &[Consonant(Place(Linguolabial)), Consonant(Manner(Fricative(NonSibilant(Median))))],
+            &[
+                Consonant(Place(Linguolabial)),
+                Consonant(Manner(Fricative(NonSibilant(Median)))),
+            ],
         ),
         (
             "ð̼",
@@ -2523,12 +2543,20 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
         ),
         (
             "r̼",
-            &[Consonant(Place(Linguolabial)), Consonant(Manner(Trill)), Consonant(Voiced)],
+            &[
+                Consonant(Place(Linguolabial)),
+                Consonant(Manner(Trill)),
+                Consonant(Voiced),
+            ],
         ),
         // linguolabial, labial notation
         (
             "m̼",
-            &[Consonant(Place(Linguolabial)), Consonant(Manner(Nasal)), Consonant(Voiced)],
+            &[
+                Consonant(Place(Linguolabial)),
+                Consonant(Manner(Nasal)),
+                Consonant(Voiced),
+            ],
         ),
         (
             "p̼",
@@ -2559,7 +2587,11 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
         ),
         (
             "ʙ̼",
-            &[Consonant(Place(Linguolabial)), Consonant(Manner(Trill)), Consonant(Voiced)],
+            &[
+                Consonant(Place(Linguolabial)),
+                Consonant(Manner(Trill)),
+                Consonant(Voiced),
+            ],
         ),
         // alveolar
         (
@@ -3075,42 +3107,42 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Velar))),
             ],
         ),
         (
             "𝼊",
             &[
                 Consonant(Place(Retroflex)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         // alternate click transcriptions
@@ -3118,28 +3150,28 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         // click consonants with superscript prefix — velar accompaniment
@@ -3147,14 +3179,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ᵏʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ᵍʘ",
             &[
                 Consonant(Place(Bilabial)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -3162,14 +3194,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ᵏǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ᵍǀ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -3177,14 +3209,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ᵏǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ᵍǃ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -3192,14 +3224,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ᵏǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ᵍǂ",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -3207,14 +3239,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ᵏǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Velar))),
             ],
         ),
         (
             "ᵍǁ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Lateral, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -3222,14 +3254,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ᵏʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ᵍʇ",
             &[
                 Consonant(Place(Dental)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -3237,14 +3269,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ᵏ𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ᵍ𝼋",
             &[
                 Consonant(Place(Palatal)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -3252,14 +3284,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ᵏʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ᵍʗ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -3267,14 +3299,14 @@ pub static PHONEMES: &[(&str, &[crate::Feature])] = {
             "ᵏʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
             ],
         ),
         (
             "ᵍʖ",
             &[
                 Consonant(Place(Alveolar)),
-                Consonant(Manner(Click(RearArticulation::Velar))),
+                Consonant(Manner(Click(Airstream::Median, RearArticulation::Velar))),
                 Consonant(Voiced),
             ],
         ),
@@ -3476,10 +3508,10 @@ pub static POLYPHTHONG_COMPONENTS: &[(&str, &[crate::Feature])] = {
 };
 
 pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
+    use crate::ConsonantFeature::*;
     use crate::Feature::*;
     use crate::Manner::*;
     use crate::Place::*;
-    use crate::ConsonantFeature::*;
 
     &[
         (
@@ -3643,13 +3675,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "m͡p",
-            &[
-                Consonant(Place(Bilabial)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("m͡p", &[Consonant(Place(Bilabial)), Consonant(Manner(Stop))]),
         (
             "m͡b",
             &[
@@ -3666,13 +3692,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "n͡t",
-            &[
-                Consonant(Place(Alveolar)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("n͡t", &[Consonant(Place(Alveolar)), Consonant(Manner(Stop))]),
         (
             "n͡d",
             &[
@@ -3689,13 +3709,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "n̪͡t̪",
-            &[
-                Consonant(Place(Dental)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("n̪͡t̪", &[Consonant(Place(Dental)), Consonant(Manner(Stop))]),
         (
             "n̪͡d̪",
             &[
@@ -3714,10 +3728,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
         ),
         (
             "n̼͡t̼",
-            &[
-                Consonant(Place(Linguolabial)),
-                Consonant(Manner(Stop)),
-            ],
+            &[Consonant(Place(Linguolabial)), Consonant(Manner(Stop))],
         ),
         (
             "n̼͡d̼",
@@ -3737,10 +3748,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
         ),
         (
             "ɳ͡t",
-            &[
-                Consonant(Place(Retroflex)),
-                Consonant(Manner(Stop)),
-            ],
+            &[Consonant(Place(Retroflex)), Consonant(Manner(Stop))],
         ),
         (
             "ɳ͡ɖ",
@@ -3758,13 +3766,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "ɲ͡c",
-            &[
-                Consonant(Place(Palatal)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("ɲ͡c", &[Consonant(Place(Palatal)), Consonant(Manner(Stop))]),
         (
             "ɲ͡ɟ",
             &[
@@ -3781,13 +3783,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "ŋ͡k",
-            &[
-                Consonant(Place(Velar)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("ŋ͡k", &[Consonant(Place(Velar)), Consonant(Manner(Stop))]),
         (
             "ŋ͡g",
             &[
@@ -3804,13 +3800,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "ɴ͡q",
-            &[
-                Consonant(Place(Uvular)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("ɴ͡q", &[Consonant(Place(Uvular)), Consonant(Manner(Stop))]),
         (
             "ɴ͡ɢ",
             &[
@@ -3827,13 +3817,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "m͜p",
-            &[
-                Consonant(Place(Bilabial)),
-                Consonant(Manner(Stop)),
-            ]
-        ),
+        ("m͜p", &[Consonant(Place(Bilabial)), Consonant(Manner(Stop))]),
         (
             "m͜b",
             &[
@@ -3850,13 +3834,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "n͜t",
-            &[
-                Consonant(Place(Alveolar)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("n͜t", &[Consonant(Place(Alveolar)), Consonant(Manner(Stop))]),
         (
             "n͜d",
             &[
@@ -3873,13 +3851,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "n̪͜t̪",
-            &[
-                Consonant(Place(Dental)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("n̪͜t̪", &[Consonant(Place(Dental)), Consonant(Manner(Stop))]),
         (
             "n̪͜d̪",
             &[
@@ -3898,10 +3870,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
         ),
         (
             "n̼͜t̼",
-            &[
-                Consonant(Place(Linguolabial)),
-                Consonant(Manner(Stop)),
-            ],
+            &[Consonant(Place(Linguolabial)), Consonant(Manner(Stop))],
         ),
         (
             "n̼͜d̼",
@@ -3921,10 +3890,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
         ),
         (
             "ɳ͜t",
-            &[
-                Consonant(Place(Retroflex)),
-                Consonant(Manner(Stop)),
-            ],
+            &[Consonant(Place(Retroflex)), Consonant(Manner(Stop))],
         ),
         (
             "ɳ͜ɖ",
@@ -3942,13 +3908,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "ɲ͜c",
-            &[
-                Consonant(Place(Palatal)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("ɲ͜c", &[Consonant(Place(Palatal)), Consonant(Manner(Stop))]),
         (
             "ɲ͜ɟ",
             &[
@@ -3965,13 +3925,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "ŋ͜k",
-            &[
-                Consonant(Place(Velar)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("ŋ͜k", &[Consonant(Place(Velar)), Consonant(Manner(Stop))]),
         (
             "ŋ͜g",
             &[
@@ -3988,13 +3942,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "ɴ͜q",
-            &[
-                Consonant(Place(Uvular)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("ɴ͜q", &[Consonant(Place(Uvular)), Consonant(Manner(Stop))]),
         (
             "ɴ͜ɢ",
             &[
@@ -4011,13 +3959,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "mp",
-            &[
-                Consonant(Place(Bilabial)),
-                Consonant(Manner(Stop)),
-            ]
-        ),
+        ("mp", &[Consonant(Place(Bilabial)), Consonant(Manner(Stop))]),
         (
             "mb",
             &[
@@ -4034,13 +3976,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "nt",
-            &[
-                Consonant(Place(Alveolar)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("nt", &[Consonant(Place(Alveolar)), Consonant(Manner(Stop))]),
         (
             "nd",
             &[
@@ -4057,13 +3993,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "n̪t̪",
-            &[
-                Consonant(Place(Dental)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("n̪t̪", &[Consonant(Place(Dental)), Consonant(Manner(Stop))]),
         (
             "n̪d̪",
             &[
@@ -4082,10 +4012,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
         ),
         (
             "n̼t̼",
-            &[
-                Consonant(Place(Linguolabial)),
-                Consonant(Manner(Stop)),
-            ],
+            &[Consonant(Place(Linguolabial)), Consonant(Manner(Stop))],
         ),
         (
             "n̼d̼",
@@ -4105,10 +4032,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
         ),
         (
             "ɳt",
-            &[
-                Consonant(Place(Retroflex)),
-                Consonant(Manner(Stop)),
-            ],
+            &[Consonant(Place(Retroflex)), Consonant(Manner(Stop))],
         ),
         (
             "ɳɖ",
@@ -4126,13 +4050,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "ɲc",
-            &[
-                Consonant(Place(Palatal)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("ɲc", &[Consonant(Place(Palatal)), Consonant(Manner(Stop))]),
         (
             "ɲɟ",
             &[
@@ -4149,13 +4067,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "ŋk",
-            &[
-                Consonant(Place(Velar)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("ŋk", &[Consonant(Place(Velar)), Consonant(Manner(Stop))]),
         (
             "ŋg",
             &[
@@ -4172,13 +4084,7 @@ pub static PRENASALIZED_STOPS: &[(&str, &[crate::Feature])] = {
                 Consonant(Voiced),
             ],
         ),
-        (
-            "ɴq",
-            &[
-                Consonant(Place(Uvular)),
-                Consonant(Manner(Stop)),
-            ],
-        ),
+        ("ɴq", &[Consonant(Place(Uvular)), Consonant(Manner(Stop))]),
         (
             "ɴɢ",
             &[
@@ -4391,7 +4297,8 @@ pub static POSTFIX_MODIFIERS: &[(&str, crate::Modifier)] = {
         ("ˑ", Length(crate::feature::Length::HalfLong)),
         ("̆", Length(crate::feature::Length::ExtraShort)),
         ("ʼ", Ejective),
-        ("\u{2019}", Ejective), // U+2019 right single quotation mark, sometimes used for ejective
+        ("\u{2019}", Ejective), // U+2019 right single quotation mark, sometimes used for ejective,
+        ("͡χ", Release(crate::feature::Release::UvularFricative))
     ]
 };
 

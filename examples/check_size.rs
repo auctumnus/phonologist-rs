@@ -15,5 +15,9 @@ fn main() {
     println!("tuple array:    {:>8} bytes", tuple_array);
     println!("string data:    {:>8} bytes", string_bytes);
     println!("feature arrays: {:>8} bytes", feature_bytes);
-    println!("total logical:  {:>8} bytes  ({:.2} KB)", total, total as f64 / 1024.0);
+    println!(
+        "total logical:  {:>8} bytes  ({:.2} KB)",
+        total,
+        total as f64 / 1024.0
+    );
 }

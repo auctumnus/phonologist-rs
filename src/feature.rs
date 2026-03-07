@@ -14,10 +14,20 @@ macro_rules! display_for_static_str {
 }
 
 /// The place of articulation of a consonant.
-/// 
+///
 /// See <https://en.wikipedia.org/wiki/Place_of_articulation>.
 #[derive(
-    Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr,
+    Clone,
+    Copy,
+    Debug,
+    PartialEq,
+    Eq,
+    Hash,
+    PartialOrd,
+    Ord,
+    strum::Display,
+    strum::IntoStaticStr,
+    strum::EnumIter,
 )]
 #[strum(serialize_all = "kebab-case")]
 pub enum Place {
@@ -150,7 +160,7 @@ pub enum Manner {
     /// See <https://en.wikipedia.org/wiki/Approximant>.
     Approximant(Airstream),
     /// See <https://en.wikipedia.org/wiki/Click_consonant>.
-    Click(RearArticulation),
+    Click(Airstream, RearArticulation),
 }
 
 impl From<Manner> for &'static str {
@@ -168,8 +178,10 @@ impl From<Manner> for &'static str {
             Approximant(Lateral) => "lateral approximant",
             Flap(Median) => "flap",
             Flap(Lateral) => "lateral flap",
-            Click(Velar) => "click",
-            Click(Uvular) => "uvular click",
+            Click(Median, Velar) => "click",
+            Click(Median, Uvular) => "uvular click",
+            Click(Lateral, Velar) => "lateral click",
+            Click(Lateral, Uvular) => "uvular lateral click",
             Affricate(kind) => match kind {
                 Sibilant | NonSibilant(Median) => "affricate",
                 NonSibilant(Lateral) => "lateral affricate",
@@ -203,7 +215,7 @@ impl Manner {
     pub fn category(&self) -> MannerCategory {
         use Manner::*;
         match self {
-            Stop | Affricate(_) | Fricative(_) | Click(_) => MannerCategory::Obstruent,
+            Stop | Affricate(_) | Fricative(_) | Click(_, _) => MannerCategory::Obstruent,
             Nasal | Trill | Flap(_) | Implosive | Approximant(_) => MannerCategory::Sonorant,
         }
     }
@@ -218,10 +230,20 @@ impl Manner {
 }
 
 /// The height, or openness, of a vowel.
-/// 
+///
 /// See <https://en.wikipedia.org/wiki/Vowel#Height>.
 #[derive(
-    Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr,
+    Clone,
+    Copy,
+    Debug,
+    PartialEq,
+    Eq,
+    Hash,
+    PartialOrd,
+    Ord,
+    strum::Display,
+    strum::IntoStaticStr,
+    strum::EnumIter,
 )]
 #[strum(serialize_all = "kebab-case")]
 pub enum Height {
@@ -237,10 +259,20 @@ pub enum Height {
 display_for_static_str!(Height);
 
 /// The depth of a vowel.
-/// 
+///
 /// See <https://en.wikipedia.org/wiki/Vowel#Backness>.
 #[derive(
-    Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr,
+    Clone,
+    Copy,
+    Debug,
+    PartialEq,
+    Eq,
+    Hash,
+    PartialOrd,
+    Ord,
+    strum::Display,
+    strum::IntoStaticStr,
+    strum::EnumIter,
 )]
 #[strum(serialize_all = "kebab-case")]
 pub enum Depth {
@@ -453,7 +485,7 @@ pub enum SecondaryArticulation {
 display_for_static_str!(SecondaryArticulation);
 
 /// See <https://en.wikipedia.org/wiki/Vowel_length>.
-/// 
+///
 /// Length::Long also marks geminate consonants; see <https://en.wikipedia.org/wiki/Gemination>.
 #[derive(
     Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, strum::Display, strum::IntoStaticStr,
@@ -525,6 +557,8 @@ pub enum Release {
     /// As in <https://en.wikipedia.org/wiki/Lakota_language#Phonology>.
     #[strum(serialize = "velar fricative")]
     VelarFricative,
+    #[strum(serialize = "uvular fricative")]
+    UvularFricative,
 }
 
 display_for_static_str!(Release);
